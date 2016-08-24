@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+echo "Load .zshrc.linux"
+
+#[ -n "$FBTERM"] && export TERM=fbterm
+
+## xmodmap
+#xmodmap ~/.Xmodmap
+
+
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+# For emacs setting
+[[ EMACS = t ]] && unsetopt zle
+
+# For ruby setting
+#export PATH=$HOME/.rbenv/shims:$PATH
+#eval "$(rbenv init -)"
+
+# export DISPLAY=":0.0"
+export EDITOR=vim
+
+# path setting for original shell scripts
+export PATH=~/bin:$PATH
+export PATH=~/graph_mpl:$PATH
+
+# /src/Open-usp-Tukubai/COMMANDS
+# export PATH=$PATH:~/src/Open-usp-Tukubai/COMMANDS
+
+
+#For Golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+#Emacs cask
+export PATH="${HOME}/.cask/bin:$PATH"
+
+
+## auto proxy setting relating to wifi
+KUINS_PROXY='http://proxy.kuins.net:8080'
+
+# ### Write IF statement 
+# WIFI=`nm-tool | grep eth0`
+# VPN=`nm-tool | grep VPN`
+# # WIFI=`networksetup -getairportnetwork en0`
+# if [ `echo $WIFI | grep -cie KUINS-Air -cie MIAKO -cie eduroam -cie kuins -cie rgw -cie "MacBook\ Air" -cie "MacBook\ Pro"` -eq 1 ] ; then
+#     export http_proxy=$KUINS_PROXY
+#     export https_proxy=$KUINS_PROXY
+#     export HTTPS_PROXY=$KUINS_PROXY
+#     export ftp_proxy=$KUINS_PROXY
+#     export FTP_PROXY=$KUINS_PROXY
+#     export proxy_rsync=$KUINS_PROXY
+#     export rsync_proxy=$KUINS_PROXY
+#     export RSYNC_PROXY=$KUINS_PROXY
+#     export ALL_PROXY=$KUINS_PROXY
+# else
+#     unset http_proxy https_proxy HTTPS_PROXY ftp_prioxy FTP_PROXY proxy_rsync rsync_proxy RSYNC_PROXY ALL_PROXY
+#     unset KUINS_PROXY
+# fi
+# echo $WIFI
+
+# Clear PATH duplicates
+typeset -U path PATH
+typeset -U path PYTHONPATH

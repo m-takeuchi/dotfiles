@@ -1,0 +1,117 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Tue Mar  5 17:32:26 2013
+;; Desktop file format version 206
+;; Emacs version 24.2.93.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '("alpha" "NIMB"))
+(setq regexp-search-ring nil)
+(setq register-alist '((48 . "*.pdf\n*.jpg\n*.png\n*.tif\n*.eps\n*.aux\n*.bak\n*.log\n*.bbl\n*.blg\n*.bst\n*.sty\n*.dvi\n")))
+(setq file-name-history '("~/.emacs.d/init-util-core.el" "~/research/.gitignore" "~/.gitignore" "~/research/.gitignore" "~/.gitignore" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/rev-list.org" "~/.emacs.d/bookmarks" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/response_to_reviewer.org" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/m-takeuchi_a_rev01.tex" "~/research/orgfiles/log.org" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/Your Submission_reviewer#2.txt" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/rev-list.org" "~/.emacs.d/init-util-core.el" "~/research/kyoto-u/review/ISSP2011/VAC-D-11-00278_review.pdf" "~/bin/gp2eps.sh" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/data/iv_C1onSUS_3rd_EMI-BF4_pn01_icacs.gp" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/data/IV_bmi-pf6_icacs.gp" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/data/IV_bmi-pf6.gp" "~/bin/gp2pdf.sh" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/data/ILIS_emitter_icacs01.pdf" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/rev-list.html" "~/research/kyoto-u/takaoka_lab/yakuhin-gas-haieki-manual/lab_tebiki_H25.org" "~/.emacs.d/init-looks.el" "~/.emacs.d/init.el" "~/.emacs.d/init-evernote.el" "~/.emacs.d/init-latex.el" "~/research/kyoto-u/conf_doc/ICACS-25/paper_a/m-takeuchi_a02.tex" "~/Desktop/dayone_exported/dayone.md" "~/Desktop/dayone_exported/test.org" "~/Desktop/dayone_exported/dayone.org"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/.emacs.d/init-util-core.el"
+  "init-util-core.el"
+  'emacs-lisp-mode
+  '(undo-tree-mode linum-mode)
+  4804
+  '(4876 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/orgfiles/log.org"
+  "log.org"
+  'org-mode
+  '(undo-tree-mode linum-mode flyspell-mode)
+  15092
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (fill-column . 80)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/rev-list.org"
+  "rev-list.org"
+  'org-mode
+  '(undo-tree-mode linum-mode flyspell-mode)
+  1097
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (fill-column . 80)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/kyoto-u/conf_doc/ICACS-25/paper_a/m-takeuchi_a_rev01.tex"
+  "m-takeuchi_a_rev01.tex"
+  'yatex-mode
+  '(undo-tree-mode linum-mode reftex-mode)
+  7970
+  '(8301 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (fill-column . 80)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/response_to_reviewer.org"
+  "response_to_reviewer.org"
+  'org-mode
+  '(undo-tree-mode linum-mode flyspell-mode)
+  1539
+  '(986 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix) (fill-column . 80)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/.gitignore"
+  ".gitignore"
+  'fundamental-mode
+  '(undo-tree-mode linum-mode)
+  194
+  '(99 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/research/kyoto-u/conf_doc/ICACS-25/paper_a/revision/resviewer.org"
+  "resviewer.org"
+  'org-mode
+  '(undo-tree-mode linum-mode flyspell-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((fill-column . 80)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/.emacs.d/init-org.el"
+  "init-org.el"
+  'emacs-lisp-mode
+  '(undo-tree-mode linum-mode)
+  3638
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/Users/m-takeuchi/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(undo-tree-mode linum-mode)
+  2663
+  '(1881 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
