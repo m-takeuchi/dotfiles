@@ -1,4 +1,7 @@
-echo "Load .zshrc"
+#!/usr/bin/env zsh
+
+#echo "Load .zshrc"
+
 # Check if zplug is installed
 if [[ ! -d ~/.zplug ]]; then
     git clone https://github.com/zplug/zplug ~/.zplug

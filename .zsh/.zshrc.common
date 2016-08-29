@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.common"
+#echo "Load .zshrc.common"
 
 export EDITOR=emacs
 

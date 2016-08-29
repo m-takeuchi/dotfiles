@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.mac"
+#echo "Load .zshrc.mac"
 
 # original aliases
 alias emacs='/usr/local/bin/emacs'

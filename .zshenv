@@ -1,4 +1,6 @@
-echo "Load .zshenv"
+#!/usr/bin/env zsh
+
+#echo "Load .zshenv"
 #source ~/perl5/perlbrew/etc/bashrc
 #export WORKON_HOME=/Users/m-takeuchi/.virtualenvs
 #export PIP_RESPECT_VIRTUALENV=true

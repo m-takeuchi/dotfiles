@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.linux"
+#echo "Load .zshrc.linux"
 
 #[ -n "$FBTERM"] && export TERM=fbterm
 
