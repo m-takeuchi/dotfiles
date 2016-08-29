@@ -12,8 +12,17 @@ zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-completions"
 zplug "Jxck/dotfiles", as:command, use:"bin/{histuniq,color}"
 zplug "k4rthik/git-cal", as:command
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
+case "${OSTYPE}" in
+    freebsd*|darwin*)
+	#[ -f ~/.zsh/.zshrc.mac ] && source ~/.zsh/.zshrc.mac
+	zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*"
+	;;
+    linux*)
+	#[ -f ~/.zsh/.zshrc.linux ] && source ~/.zsh/.zshrc.linux
+	zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*"
+	;;
+esac
+
 zplug "plugins/git",   from:oh-my-zsh
 zplug "jhawthorn/fzy", as:command, rename-to:fzy, \
     hook-build:"
