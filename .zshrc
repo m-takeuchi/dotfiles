@@ -21,6 +21,7 @@ case "${OSTYPE}" in
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*"
     ;;
 esac
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux ### fzf for tmux
 
 ### common
 zplug "zsh-users/zsh-history-substring-search"
@@ -46,7 +47,7 @@ zplug "zsh-users/zsh-syntax-highlighting", nice:10
 zplug "b4b4r07/zsh-gomi", on:"junegunn/fzf-bin", nice:5
 zplug "mollifier/anyframe", on:"junegunn/fzf-bin", nice:5
 zstyle ":anyframe:selector:" use fzf
-
+zplug "arks22/tmuximum", as:command, on:"junegunn/fzf-bin"
 
 ### Looks
 zplug "plugins/colorize", from:oh-my-zsh # Colorized cat with pygment
@@ -69,22 +70,23 @@ if ! zplug check --verbose; then
 fi
 
 # Auto run tmux
-# if [ -z $TMUX ]; then
+# if [ -z $TUX ]; then
 #   # tmuxのオプションに-2を付けないとubuntuのtmux上でvimがカラーにならない
 #   tmux -2
-#fi
+# fi
+
 
 ## load user .zshrc configuration file
-[ -f ~/.zsh/.zshrc.common ] && source ~/.zsh/.zshrc.common
+[ -f ~/.zsh/10.zshrc.common ] && source ~/.zsh/10.zshrc.common
 case "${OSTYPE}" in
     freebsd*|darwin*)
-	[ -f ~/.zsh/.zshrc.mac ] && source ~/.zsh/.zshrc.mac
+	[ -f ~/.zsh/20.zshrc.mac ] && source ~/.zsh/20.zshrc.mac
 	;;
     linux*)
-	[ -f ~/.zsh/.zshrc.linux ] && source ~/.zsh/.zshrc.linux
+	[ -f ~/20.zsh/.zshrc.linux ] && source ~/.zsh/20.zshrc.linux
 	;;
 esac
-
+[ -f ~/.zsh/30.zshrc.common ] && source ~/.zsh/30.zshrc.common
 
 # Then, source plugins and add commands to $PATH
 zplug load --verbose

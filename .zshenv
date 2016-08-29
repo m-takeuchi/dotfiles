@@ -11,10 +11,12 @@
 
 
 #### system-wide environment settings for zsh(1)
-if [ -x /usr/libexec/path_helper ]; then
-    PATH=''
-    eval `/usr/libexec/path_helper -s`
-    fi
+# if [ -x /usr/libexec/path_helper ]; then
+#     if [ -z "$TMUX" ]; then
+# 	eval `/usr/libexec/path_helper -s`
+#     fi
+# fi
+setopt no_global_rcs
 
 ## Environment variable configuration
 #
