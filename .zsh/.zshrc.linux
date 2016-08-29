@@ -1,11 +1,13 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.linux"
+#echo "Load .zshrc.linux"
 
 #[ -n "$FBTERM"] && export TERM=fbterm
 
 ## xmodmap
 #xmodmap ~/.Xmodmap
+
+alias python=python3
 
 
 # export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig

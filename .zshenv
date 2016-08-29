@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 #echo "Load .zshenv"
 
 #source ~/perl5/perlbrew/etc/bashrc

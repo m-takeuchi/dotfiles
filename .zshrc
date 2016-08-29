@@ -1,4 +1,7 @@
-# echo "Load .zshrc"
+#!/usr/bin/env zsh
+
+#echo "Load .zshrc"
+
 # Check if zplug is installed
 if [[ ! -d ~/.zplug ]]; then
     git clone https://github.com/zplug/zplug ~/.zplug
@@ -24,6 +27,7 @@ zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-completions"
 zplug "Jxck/dotfiles", as:command, use:"bin/{histuniq,color}"
 zplug "k4rthik/git-cal", as:command
+
 zplug "plugins/git",   from:oh-my-zsh
 zplug "jhawthorn/fzy", as:command, rename-to:fzy, \
     hook-build:"
