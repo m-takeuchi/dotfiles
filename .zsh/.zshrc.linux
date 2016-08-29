@@ -7,6 +7,8 @@ echo "Load .zshrc.linux"
 ## xmodmap
 #xmodmap ~/.Xmodmap
 
+alias python=python3
+
 
 # export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
