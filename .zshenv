@@ -1,9 +1,18 @@
-echo "Load .zshenv"
+#echo "Load .zshenv"
+
 #source ~/perl5/perlbrew/etc/bashrc
 #export WORKON_HOME=/Users/m-takeuchi/.virtualenvs
 #export PIP_RESPECT_VIRTUALENV=true
 #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 # users generic .zshrc file for zsh(1)
+
+
+
+#### system-wide environment settings for zsh(1)
+if [ -x /usr/libexec/path_helper ]; then
+    PATH=''
+    eval `/usr/libexec/path_helper -s`
+    fi
 
 ## Environment variable configuration
 #
@@ -89,7 +98,7 @@ setopt magic_equal_subst
 setopt mark_dirs
 
 # Command history configuration
-HISTFILE=~/.zsh_history
+HISTFILE=${HOME}/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt hist_ignore_dups # ignore duplication command history list
@@ -113,10 +122,10 @@ bindkey "\\ep" history-beginning-search-backward-end
 bindkey "\\en" history-beginning-search-forward-end
 
 # インクリメンタルからの検索
-bindkey -r "^R"
-bindkey -r "^S"
-# bindkey "^R" history-incremental-search-backward
-# bindkey "^S" history-incremental-search-forward
+# bindkey -r "^R" #unbind
+# bindkey -r "^S" #unbind
+bindkey "^R" history-incremental-search-backward
+bindkey "^S" history-incremental-search-forward
 setopt no_flow_control		# シェルノフローコントロールをやめる
 
 

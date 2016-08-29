@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.common"
+#echo "Load .zshrc.common"
 
 export EDITOR=emacs
 
@@ -65,4 +65,4 @@ bindkey '^x^f' anyframe-widget-insert-filename
 
 # Clear PATH duplicates
 typeset -U path PATH
-typeset -U path PYTHONPATH
+
