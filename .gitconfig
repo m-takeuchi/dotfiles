@@ -1,3 +1,5 @@
 [user]
 	email = m2takeuchi@gmail.com
 	name = Mitsuaki Takeuchi
+[push]
+	default = simple
