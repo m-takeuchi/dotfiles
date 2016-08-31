@@ -83,7 +83,7 @@ case "${OSTYPE}" in
 	[ -f ~/.zsh/20.zshrc.mac ] && source ~/.zsh/20.zshrc.mac
 	;;
     linux*)
-	[ -f ~/20.zsh/.zshrc.linux ] && source ~/.zsh/20.zshrc.linux
+	[ -f ~/.zsh/20.zshrc.linux ] && source ~/.zsh/20.zshrc.linux
 	;;
 esac
 [ -f ~/.zsh/30.zshrc.common ] && source ~/.zsh/30.zshrc.common
