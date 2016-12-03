@@ -19,7 +19,7 @@
 (require 'helm-config)
 (global-set-key (kbd "C-c h") 'helm-mini)
 (helm-mode 1)
-(helm-migemo-mode 1)
+;;(helm-migemo-mode 1)
     ;; C-hで前の文字削除
     (define-key helm-map (kbd "C-h") 'delete-backward-char)
     (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -33,8 +33,11 @@
     (define-key global-map (kbd "M-y")     'helm-show-kill-ring)
 
 ;;;; Visual settings
+
 ;(load-theme 'wheatgrass t)
 (load-theme 'wombat t)
 (global-linum-mode t)
-(setq linum-format "%4d\u2502") ; 4digits region and 1 space with vertical line
-(setq default-tab-width 4) ; indent 
+;; (setq linum-format "%4d\u2502 ") ; 4digits region and 1 space with vertical line
+(setq linum-format "%4d ") ; 4digits region and 1 space with vertical line
+(setq default-tab-width 4) ; indent
+(menu-bar-mode 0)

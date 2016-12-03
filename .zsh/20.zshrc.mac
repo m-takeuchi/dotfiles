@@ -4,7 +4,7 @@
 
 # original aliases
 alias emacs='/usr/local/bin/emacs'
-
+alias brew="env PATH=${PATH/\/Users\/m-takeuchi\/\.pyenv\/shims:/} brew"
 
 ## xmodmap
 #xmodmap ~/.Xmodmap
@@ -14,8 +14,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
 # For emacs setting
 [[ EMACS = t ]] && unsetopt zle
-#Emacs cask
-export PATH="${HOME}/.cask/bin:$PATH"
+
 
 # For ruby setting
 #export PATH=$HOME/.rbenv/shims:$PATH
@@ -94,4 +93,3 @@ echo $WIFI
 # Clear PATH duplicates
 typeset -U path PATH
 # typeset -U path PYTHONPATH
-

@@ -70,7 +70,7 @@ if ! zplug check --verbose; then
 fi
 
 # Auto run tmux
-# if [ -z $TUX ]; then
+# if [ -z $TMUX ]; then
 #   # tmuxのオプションに-2を付けないとubuntuのtmux上でvimがカラーにならない
 #   tmux -2
 # fi

@@ -16,8 +16,13 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
 #Emacs cask
-export PATH="${HOME}/.cask/bin:$PATH"
+export PATH="${HOME}/.emacs.d/.cask/bin:$PATH"
 
+#Alias
+function pygless(){
+    pygmentize -g $1 | less -R
+    }
+alias lc=pygless
 
 
 ### anyframe

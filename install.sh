@@ -2,6 +2,22 @@
 
 DOTPATH=~/.dotfiles
 
+
+
+# is_exists returns true if executable $1 exists in $PATH
+function is_exists() {
+	which "$1" >/dev/null 2>&1
+	return $?
+}
+
+
+# has is wrapper function
+function has() {
+	is_exists "$@"
+	}
+
+
+
 # git が使えるなら git
 if has "git"; then
     git clone --recursive "$GITHUB_URL" "$DOTPATH"
@@ -37,4 +53,7 @@ do
     [ "$f" = ".git" ] && continue
 
     ln -snfv "$DOTPATH/$f" "$HOME/$f"
-    done
+done
+
+#tmux plugin
+#git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
