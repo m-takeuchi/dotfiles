@@ -4,6 +4,9 @@
 
 export EDITOR=emacs
 
+# dotfiles path
+export DOTPATH=~/dotfiles
+
 # path setting for original shell scripts
 export PATH=~/bin:$PATH
 export PATH=~/graph_mpl:$PATH
