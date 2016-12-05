@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTPATH=~/.dotfiles
+DOTPATH=~/dotfiles
 
 
 
@@ -39,12 +39,12 @@ elif has "curl" || has "wget"; then
     mv -f dotfiles-master "$DOTPATH"
 
 else
-    die "curl or wget required"
+    echo "curl or wget required"
 fi
 
 cd $DOTPATH
 if [ $? -ne 0 ]; then
-    die "not found: $DOTPATH"
+    echo "not found: $DOTPATH"
 fi
 
 # 移動できたらリンクを実行する
