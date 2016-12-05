@@ -7,10 +7,15 @@ echo "Load .zshrc.linux"
 ## xmodmap
 #xmodmap ~/.Xmodmap
 
-alias python=python3
+#alias python=python3
 
 
 # export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+# For linuxburew path
+export PATH="/home/bempp/.linuxbrew/bin:$PATH"
+export MANPATH="/home/bempp/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/bempp/.linuxbrew/share/info:$INFOPATH"
 
 # For emacs setting
 [[ EMACS = t ]] && unsetopt zle
