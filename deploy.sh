@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DOTPATH=~/dotfiles
+
 cd ${DOTPATH}
 
 for f in .??*

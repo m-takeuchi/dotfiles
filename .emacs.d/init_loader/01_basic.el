@@ -14,6 +14,13 @@
 ;; (global-set-key (kbd "<delete>") 'delete-region)
 (delete-selection-mode 1)
 
+
+;;; No backup files like "*.~"
+(setq make-backup-files nil)
+;;; No backup files like ".#*"
+(setq auto-save-default nil)
+
+
 ;; helm
 ;;
 (require 'helm-config)
