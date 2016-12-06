@@ -12,10 +12,6 @@ echo "Load .zshrc.linux"
 
 # export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
-# For linuxburew path
-export PATH="/home/bempp/.linuxbrew/bin:$PATH"
-export MANPATH="/home/bempp/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="/home/bempp/.linuxbrew/share/info:$INFOPATH"
 
 # For emacs setting
 [[ EMACS = t ]] && unsetopt zle
@@ -66,6 +62,14 @@ KUINS_PROXY='http://proxy.kuins.net:8080'
 # fi
 # echo $WIFI
 
+# For linuxburew path
+export PATH="/home/bempp/.linuxbrew/bin:$PATH"
+export MANPATH="/home/bempp/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/bempp/.linuxbrew/share/info:$INFOPATH"
+
+
 # Clear PATH duplicates
 typeset -U path PATH
+typeset -U path MANPATH
+typeset -U path INFOPATH
 typeset -U path PYTHONPATH
