@@ -39,6 +39,19 @@
     (define-key global-map (kbd "M-x")     'helm-M-x)
     (define-key global-map (kbd "M-y")     'helm-show-kill-ring)
 
+
+;; undo-tree
+;;
+;; undo-tree を読み込む
+(require 'undo-tree)
+
+;; undo-tree を起動時に有効にする
+(global-undo-tree-mode t)
+
+;; M-/ をredo に設定する。
+(global-set-key (kbd "M-/") 'undo-tree-redo)
+
+
 ;;;; Visual settings
 
 ;(load-theme 'wheatgrass t)

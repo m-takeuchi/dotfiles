@@ -28,3 +28,4 @@
 (depends-on "init-loader")
 (depends-on "helm")
 (depends-on "migemo")
+(depends-on "undo-tree")
