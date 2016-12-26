@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-echo "Load .zshrc.linux"
+echo "Load .zsh/20.zshrc.linux"
 
 #[ -n "$FBTERM"] && export TERM=fbterm
 
@@ -40,7 +40,7 @@ export PATH="${HOME}/.cask/bin:$PATH"
 
 
 ## auto proxy setting relating to wifi
-KUINS_PROXY='http://proxy.kuins.net:8080'
+#KUINS_PROXY='http://proxy.kuins.net:8080'
 
 # ### Write IF statement 
 # WIFI=`nm-tool | grep eth0`

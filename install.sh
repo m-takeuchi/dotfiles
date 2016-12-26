@@ -19,7 +19,8 @@ function has() {
 
 echo "If this is first time on Ubuntu, you should run:"
 echo "sudo apt-get install build-essential curl git python-setuptools ruby"
-echo "sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev"
+echo "sudo apt-get install m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev gettext"
+echo 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"'
 
 # git が使えるなら git
 if has "git"; then
