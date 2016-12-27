@@ -63,10 +63,9 @@ export PATH="${HOME}/.cask/bin:$PATH"
 # echo $WIFI
 
 # For linuxburew path
-export PATH="/home/bempp/.linuxbrew/bin:$PATH"
-export MANPATH="/home/bempp/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="/home/bempp/.linuxbrew/share/info:$INFOPATH"
-
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 
 # Clear PATH duplicates
 typeset -U path PATH

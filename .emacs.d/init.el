@@ -10,12 +10,12 @@
 (package-initialize)
 
 (when (equal system-type 'darwin)
-  (require 'cask))
-(when (equal system-type 'darwin)
-  (require 'cask "~/.emacs.d/.cask/cask.el"))
-
+ (require 'cask))
+(when (equal system-type 'gnu/linux)
+ (require 'cask "/home/m-takeuchi/.linuxbrew/share/emacs/site-lisp/cask/cask.el"))
 
 (cask-initialize)
+
 (require 'pallet)
 (pallet-mode t)
 

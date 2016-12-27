@@ -1,0 +1,4 @@
+
+In end of data:
+helm-font.el:202:1:Warning: the function ‘x-list-fonts’ is not known to be
+    defined.
