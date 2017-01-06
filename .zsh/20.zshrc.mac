@@ -49,6 +49,7 @@ eval `/usr/libexec/path_helper -s`
 # For pyenv-virtualenv
 PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
+	export PATH=${PYENV_ROOT}/versions/`pyenv version-name`/Python.framework/Versions/Current/bin:$PATH
     export PATH=${PYENV_ROOT}/bin:$PATH
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
@@ -58,6 +59,11 @@ fi
 # brew api token
 if [ -f ~/.brew_api_token ];then
   source ~/.brew_api_token
+fi
+
+# conoha api
+if [ -f ~/.conoha_api ];then
+  source ~/.conoha_api
 fi
 
 
