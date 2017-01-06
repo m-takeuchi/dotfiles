@@ -45,6 +45,7 @@ ENHANCD_FILTER=fzf
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "b4b4r07/zsh-gomi", on:"junegunn/fzf-bin", defer:1
+# zplug "b4b4r07/zsh-gomi", as:command, use:bin/gomi, on:junegunn/fzf-bin
 zplug "mollifier/anyframe", on:"junegunn/fzf-bin", defer:1
 zstyle ":anyframe:selector:" use fzf
 zplug "arks22/tmuximum", as:command, on:"junegunn/fzf-bin"

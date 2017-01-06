@@ -18,6 +18,13 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
+
+# brew api token
+if [ -f ~/.brew_api_token ];then
+  source ~/.brew_api_token
+fi
+
+
 #Emacs cask
 export PATH="${HOME}/.emacs.d/.cask/bin:$PATH"
 
