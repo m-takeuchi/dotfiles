@@ -3,20 +3,12 @@
 # echo "Load 20.zshrc.mac"
 
 # original aliases
-alias emacs='/usr/local/bin/emacs'
-alias brew="env PATH=${PATH/\/Users\/m-takeuchi\/\.pyenv\/shims:/} brew"
+# alias emacs='/usr/local/bin/emacs'
 
 ## xmodmap
 #xmodmap ~/.Xmodmap
 
 
-# For pyenv-virtualenv
-PYENV_ROOT="${HOME}/.pyenv"
-if [ -d "${PYENV_ROOT}" ]; then
-    export PATH=${PYENV_ROOT}/bin:$PATH
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-fi
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
@@ -54,7 +46,6 @@ export PATH=~/usr/local/bin:$PATH
 # For mactex of brewcask
 eval `/usr/libexec/path_helper -s`
 
-<<<<<<< HEAD
 # For pyenv-virtualenv
 PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ]; then
@@ -64,19 +55,20 @@ if [ -d "${PYENV_ROOT}" ]; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
+# cf. https://github.com/yyuu/pyenv/issues/106#issuecomment-94921352
+if which pyenv 2>&1 >/dev/null; then alias brew="env PATH=${PATH//$(pyenv root)\/shims:/} brew"; fi
+
+
 
 # brew api token
 if [ -f ~/.brew_api_token ];then
   source ~/.brew_api_token
 fi
-=======
->>>>>>> e65273954053b2333853507bf0a78e3bbc5fc583
 
 # conoha api
 if [ -f ~/.conoha_api ];then
   source ~/.conoha_api
 fi
-
 
 #OPAM
 . /Users/m-takeuchi/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
@@ -103,8 +95,8 @@ fi
 echo $WIFI
 
 
-
-
+### powerline path
+export POWERLINE_CONF_PATH=`pip show powerline-status | grep Location | sed "s/Location: //"`/powerline/bindings/tmux/powerline.conf
 
 
 # Clear PATH duplicates

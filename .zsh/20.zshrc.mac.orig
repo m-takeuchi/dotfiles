@@ -1,0 +1,112 @@
+#!/usr/bin/env zsh
+
+# echo "Load 20.zshrc.mac"
+
+# original aliases
+alias emacs='/usr/local/bin/emacs'
+alias brew="env PATH=${PATH/\/Users\/m-takeuchi\/\.pyenv\/shims:/} brew"
+
+## xmodmap
+#xmodmap ~/.Xmodmap
+
+
+# For pyenv-virtualenv
+PYENV_ROOT="${HOME}/.pyenv"
+if [ -d "${PYENV_ROOT}" ]; then
+    export PATH=${PYENV_ROOT}/bin:$PATH
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+# For emacs setting
+[[ EMACS = t ]] && unsetopt zle
+
+
+# For ruby setting
+#export PATH=$HOME/.rbenv/shims:$PATH
+#eval "$(rbenv init -)"
+
+# export DISPLAY=":0.0"
+
+export EDITOR=emacs
+
+#export MANPATH=~/bin/man:$MANPATH
+#export LD_LIBRARY_PATH=/Users/m-takeuchi/src/Minuit-1_7_9/src/.libs:$LD_LIBRARY_PATH
+
+# path setting for original shell scripts
+export PATH=~/bin:$PATH
+export PATH=~/graph_mpl:$PATH
+
+# For stow setting
+export PATH=~/usr/local/bin:$PATH
+
+#alias latexmk='sudo -u $USER latexmk'
+
+#mozc misc setting
+#export PATH=~/depot_tools:$PATH
+### If you update mozc source, type 'gclient sync' and compile it.
+#export PATH=/usr/local/sbin:$PATH
+
+
+
+# For mactex of brewcask
+eval `/usr/libexec/path_helper -s`
+
+<<<<<<< HEAD
+# For pyenv-virtualenv
+PYENV_ROOT="${HOME}/.pyenv"
+if [ -d "${PYENV_ROOT}" ]; then
+	export PATH=${PYENV_ROOT}/versions/`pyenv version-name`/Python.framework/Versions/Current/bin:$PATH
+    export PATH=${PYENV_ROOT}/bin:$PATH
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
+
+# brew api token
+if [ -f ~/.brew_api_token ];then
+  source ~/.brew_api_token
+fi
+=======
+>>>>>>> e65273954053b2333853507bf0a78e3bbc5fc583
+
+# conoha api
+if [ -f ~/.conoha_api ];then
+  source ~/.conoha_api
+fi
+
+
+#OPAM
+. /Users/m-takeuchi/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+## auto proxy setting relating to wifi
+KUINS_PROXY='http://proxy.kuins.net:8080'
+#WIFI=`nm-tool | grep eth0`
+#VPN=`nm-tool | grep VPN`
+WIFI=`networksetup -getairportnetwork en0`
+if [ `echo $WIFI | grep -cie KUINS-Air -cie MIAKO -cie eduroam -cie kuins -cie rgw -cie "MacBook\ Air" -cie "MacBook\ Pro"` -eq 1 ] ; then
+    export http_proxy=$KUINS_PROXY
+    export https_proxy=$KUINS_PROXY
+    export HTTPS_PROXY=$KUINS_PROXY
+    export ftp_proxy=$KUINS_PROXY
+    export FTP_PROXY=$KUINS_PROXY
+    export proxy_rsync=$KUINS_PROXY
+    export rsync_proxy=$KUINS_PROXY
+    export RSYNC_PROXY=$KUINS_PROXY
+    export ALL_PROXY=$KUINS_PROXY
+else
+    unset http_proxy https_proxy HTTPS_PROXY ftp_prioxy FTP_PROXY proxy_rsync rsync_proxy RSYNC_PROXY ALL_PROXY
+    unset KUINS_PROXY
+fi
+echo $WIFI
+
+
+
+
+
+
+# Clear PATH duplicates
+typeset -U path PATH
+# typeset -U path PYTHONPATH

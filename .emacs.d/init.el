@@ -11,7 +11,7 @@
 
 (when (equal system-type 'darwin)
  (require 'cask))
- ;; (require 'cask "~/.cask/cask.el"))
+ ;; (require 'cask "~/.emacs.d/.cask/cask.el"))
 (when (equal system-type 'gnu/linux)
  (require 'cask "~/.linuxbrew/share/emacs/site-lisp/cask/cask.el"))
 
@@ -21,16 +21,19 @@
 (pallet-mode t)
 
 ;;init-loader
+
+(require 'init-loader)
+(init-loader-load "~/.emacs.d/init_loader")
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(init-loader-show-log-after-init (quote error-only))
  '(package-selected-packages
    (quote
-	(flycheck git-commit helm-core magit-popup with-editor yasnippet web-mode use-package undo-tree smex smartparens projectile prodigy popwin pallet nyan-mode multiple-cursors migemo magit init-loader idle-highlight-mode htmlize helm flycheck-cask expand-region exec-path-from-shell drag-stuff))))
- (init-loader-load (concat user-emacs-directory "init_loader"))
+    (flycheck helm helm-core markdown-mode ein helm-ag yasnippet web-mode use-package undo-tree smex smartparens rich-minority rainbow-mode prodigy powerline popwin pallet nyan-mode multiple-cursors migemo magit init-loader idle-highlight-mode htmlize helm-projectile gitconfig flycheck-cask expand-region exec-path-from-shell drag-stuff auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -90,4 +90,6 @@ esac
 [ -f ~/.zsh/30.zshrc.common ] && source ~/.zsh/30.zshrc.common
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+# zplug load --verbose
+echo "loading zplug..."
+zplug load
