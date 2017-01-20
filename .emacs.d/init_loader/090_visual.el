@@ -4,8 +4,10 @@
 (load-theme 'tango-dark t)
 ;; (load-theme 'wombat t)
 (global-linum-mode t)
-;; (setq linum-format "%4d\u2502 ") ; 4digits region and 1 space with vertical line
-(setq linum-format "%4d ") ; 4digits region and 1 space with vertical line
+
+;; (setq linum-format "%4d\u2016") ; 4digits region and 1 space with vertical line
+(setq linum-format "%4d| ") ; 4digits region and 1 space with vertical line
+
 
 ;; Indent width
 (setq default-tab-width 4) ; indent

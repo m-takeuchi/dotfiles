@@ -7,8 +7,15 @@
 ;(global-set-key (kbd "M-?") 'help-command)
 ;; (global-set-key (kbd "C-?") 'help-command)
 ;; (global-set-key (kbd "M-?") 'mark-paragraph)
-(global-set-key (kbd "C-h") 'delete-backward-char)
-(global-set-key (kbd "M-h") 'backward-kill-word)
+
+;;;; C-hをbackspaceに
+;; (keyboard-translate ?\C-h ?\C-?)
+;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
+(define-key key-translation-map [?\C-h] [?\C-?])
+;; (global-set-key (kbd "C-?") 'help-for-help)
+;; (global-set-key (kbd "C-h") 'delete-backward-char)
+;; (global-set-key (kbd "M-h") 'backward-kill-word)
+
 
 ;; alt(option) key as meta
 (when (equal system-type 'darwin)
@@ -61,10 +68,10 @@
 (helm-mode 1)
 (when (executable-find "cmigemo")
   (helm-migemo-mode 1))
-    ;; C-hで前の文字削除
-    (define-key helm-map (kbd "C-h") 'delete-backward-char)
-    (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-    (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+    ;; ;; C-hで前の文字削除
+    ;; (define-key helm-map (kbd "C-h") 'delete-backward-char)
+    ;; (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+    ;; (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
 
     ;; キーバインド
     (define-key global-map (kbd "C-x b")   'helm-buffers-list)

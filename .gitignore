@@ -4,3 +4,4 @@
 .config/*
 !.config/fish
 bin/*
+.emacs.d/.cask

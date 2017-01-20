@@ -21,7 +21,6 @@
 (pallet-mode t)
 
 ;;init-loader
-
 (require 'init-loader)
 (init-loader-load "~/.emacs.d/init_loader")
 
@@ -33,7 +32,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck helm helm-core markdown-mode ein helm-ag yasnippet web-mode use-package undo-tree smex smartparens rich-minority rainbow-mode prodigy powerline popwin pallet nyan-mode multiple-cursors migemo magit init-loader idle-highlight-mode htmlize helm-projectile gitconfig flycheck-cask expand-region exec-path-from-shell drag-stuff auto-complete))))
+	(visual-regexp magithub git-commit request auctex auctex-latexmk auctex-lua yatex flycheck helm helm-core markdown-mode ein helm-ag yasnippet web-mode use-package undo-tree smex smartparens rich-minority rainbow-mode prodigy powerline popwin pallet nyan-mode multiple-cursors migemo init-loader idle-highlight-mode htmlize helm-projectile gitconfig flycheck-cask expand-region exec-path-from-shell drag-stuff auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

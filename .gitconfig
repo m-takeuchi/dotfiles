@@ -3,3 +3,5 @@
 	name = Mitsuaki Takeuchi
 [push]
 	default = simple
+[core]
+	editor = emacs -nw

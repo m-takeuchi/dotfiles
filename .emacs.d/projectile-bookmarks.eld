@@ -1,1 +1,1 @@
-("~/dotfiles/")
+("~/dotfiles/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/ilislife_wxp/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/data_ilislife/")
