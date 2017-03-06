@@ -1,1 +1,1 @@
-("~/dotfiles/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/ilislife_wxp/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/data_ilislife/")
+("~/dotfiles/" "~/research/bin/" "~/.zplug/" "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/" "~/src/offlineimap/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/ilislife_wxp/" "~/research/kyoto-u/exp_data/ILIS/ILIS_program_t-i/data_ilislife/")

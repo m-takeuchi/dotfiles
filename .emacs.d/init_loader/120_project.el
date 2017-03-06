@@ -1,3 +1,5 @@
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
+(use-package projectile
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))

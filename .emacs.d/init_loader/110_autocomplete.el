@@ -1,3 +1,4 @@
-(require 'auto-complete)
-(require 'auto-complete-config)    ; 必須ではないですが一応
-(global-auto-complete-mode t)
+(use-package auto-complete
+  :config
+  (use-package auto-complete-config)    ; 必須ではないですが一応
+  (global-auto-complete-mode t))

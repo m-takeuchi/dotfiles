@@ -1,2 +1,2 @@
 ;; major mode for git-config files
-(require 'gitconfig)
+(use-package gitconfig)

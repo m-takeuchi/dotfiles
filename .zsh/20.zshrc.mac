@@ -22,7 +22,8 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
 # export DISPLAY=":0.0"
 
-export EDITOR=emacs
+# export EDITOR=emacs
+export EDITOR="emacs -nw"
 
 #export MANPATH=~/bin/man:$MANPATH
 #export LD_LIBRARY_PATH=/Users/m-takeuchi/src/Minuit-1_7_9/src/.libs:$LD_LIBRARY_PATH
@@ -41,6 +42,8 @@ export PATH=~/usr/local/bin:$PATH
 ### If you update mozc source, type 'gclient sync' and compile it.
 #export PATH=/usr/local/sbin:$PATH
 
+# mlterm with homebrew
+export PATH="/usr/local/opt/mlterm/bin:$PATH"
 
 
 # For mactex of brewcask

@@ -41,7 +41,9 @@ zplug "stedolan/jq", from:gh-r, as:command, rename-to:jq
 zplug "b4b4r07/emoji-cli", on:"stedolan/jq"
 
 zplug "b4b4r07/enhancd", use:init.sh
-ENHANCD_FILTER=fzf
+# ENHANCD_FILTER=fzf
+export ENHANCD_FILTER=fzy
+export ENHANCD_DISABLE_DOT=1
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "b4b4r07/zsh-gomi", on:"junegunn/fzf-bin", defer:1
@@ -93,3 +95,5 @@ esac
 # zplug load --verbose
 echo "loading zplug..."
 zplug load
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
