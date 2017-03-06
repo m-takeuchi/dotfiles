@@ -64,13 +64,12 @@ set -x PATH ~/usr/local/bin $PATH
 status --is-interactive; and . (pyenv init -| psub)
 set -x PATH $HOME/.pyenv/shims $PATH 
 
-## auto proxy setting relating to wifi
-set KUINS_PROXY 'http://proxy.kuins.net:8080'
 
 # OS-specific settings
 switch (uname)
 	case Darwin
 		# source $HOME/.dotfiles/shell/fish/OS/darwin.fish
+		source $HOME/.config/fish/functions/proxy.fish
 		proxy_mac
 	case Linux
 		# source $HOME/.dotfiles/shell/fish/OS/linux.fish
