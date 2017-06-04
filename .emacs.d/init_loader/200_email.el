@@ -1,4 +1,8 @@
+(use-package cp5022x
+  :ensure t)
+
 (use-package notmuch
+  :ensure t
   :preface
 
   ;; リンクを規定ブラウザで開く
@@ -7,8 +11,9 @@
    (when (equal system-type 'linux)
    	 (setq browse-url-browser-function 'eww-browse-url))
 
-   ;; 日本語に関する設定
-  (setq mm-coding-system-priorities  '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1))
+  ;; 日本語に関する設定
+  ;; (setq mm-coding-system-priorities  '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1))
+  (setq mm-coding-system-priorities  '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1 cp50220))
   (setq mm-use-ultra-safe-encoding t)
   (setq message-sendmail-envelope-from 'header)
   (setq	mail-specify-envelope-from 'header)
@@ -59,6 +64,16 @@
   (setq message-citation-line-function 'message-insert-formatted-citation-line)
   (setq message-citation-line-format "On %Y-%m-%d, %f wrote:\n")
 
+  ;; 転送時に元メッセージ
+  (defun my-forward (prefix)
+	(interactive "P")
+	(let (
+		  ;; (message-forward-as-mime nil) ; rfc822添付ではなくインライン化
+		  ;; (message-forward-ignored-headers ".*") ; 正規表現に一致するヘッダを無視
+		  (message-make-forward-subject-function 'message-forward-subject-fwd) ;記事の表題の前に Fwd: 
+		  )
+	  (notmuch-show-forward-message prefix)))
+  
 
   ;; show画面でのフラグon-off
   (defun notmuch-show-toggle-deleted ()
@@ -99,8 +114,8 @@
 		(notmuch-search-tag (list "-jobhant"))
 	  (notmuch-search-tag (list "+jobhant"))))
 
-
-  :bind (("C-c m" . notmuch)		 ;; C-c m opens up Notmuch from any buffer
+  ;; C-c m opens up Notmuch from any buffer
+  :bind (("C-c m" . notmuch)
    		 :map notmuch-show-mode-map
 		   ("r" . notmuch-show-reply)
            ("R" . notmuch-show-reply-sender)
@@ -108,6 +123,7 @@
 		   ("D" . notmuch-show-toggle-deleted)
 		   ("J" . notmuch-show-toggle-jobhant)
 		   (".b" . browse-url-at-point)
+		   ("f" . my-forward)			;forward messages inline
    		 :map notmuch-search-mode-map
            ("r" . notmuch-search-reply-to-thread)
            ("R" . notmuch-search-reply-sender)
@@ -117,7 +133,7 @@
 		   )
 
   :config
-  (setq notmuch-search-oldest-first nil)
+  (setq notmuch-search-oldest-first nil) ; Sort for newest first
   (setq notmuch-mua-reply-insert-header-p-function 'notmuch-show-reply-insert-header-p-never)
   ;; (setq notmuch-mua-reply-insert-header-p-function 'notmuch-show-reply-insert-header-p-trimmed)
   ;; (setq notmuch-mua-reply-insert-header-p-function 'notmuch-show-reply-insert-header-p-minimal)
@@ -133,9 +149,9 @@
 
   (setq notmuch-fcc-dirs '(("m-takeuchi@kuee.kyoto-u.ac.jp" . "kumail/Sent")
 						   ("takeuchi.mitsuaki.6w@kyoto-u.ac.jp" . "kumail/Sent")
-						   ("m2takeuchi@gmail.com" . "m2takeuchi_gmail/Sent")))
+						   ("m2takeuchi@gmail.com" . "m2gmail/Sent")))
   (setq notmuch-mua-compose-in 'current-window)
-  (setq notmuch-show-indent-messages-width 4)
+  (setq notmuch-show-indent-messages-width 2)
   (setq notmuch-saved-searches
 		'((:name "inbox" :query "tag:inbox" :key "i")
 		  (:name "kumail" :query "tag:kumail" :key "k")
@@ -144,6 +160,7 @@
 		  (:name "m2gmail-inbox" :query "tag:m2gmail and tag:inbox" :key "G")
 		  (:name "unread" :query "tag:unread" :key "u")
 		  (:name "flagged" :query "tag:flagged" :key "f")
+  		  (:name "flagged-work" :query "tag:flagged and tag:kumail" :key "F")
 		  (:name "sent" :query "tag:sent" :key "t")
 		  (:name "drafts" :query "tag:draft" :key "d")
 		  (:name "archive" :query "-tag:inbox" :key "A")

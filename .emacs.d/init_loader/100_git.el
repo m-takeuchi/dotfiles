@@ -1,2 +1,3 @@
 ;; major mode for git-config files
-(use-package gitconfig)
+(use-package gitconfig
+    :ensure t)

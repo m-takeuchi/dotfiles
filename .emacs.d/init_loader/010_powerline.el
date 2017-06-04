@@ -1,5 +1,6 @@
 ;;;; Powerline settings
 (use-package powerline
+  :ensure t
   :config
   ;;; select theme
   (powerline-default-theme)

@@ -1,14 +1,23 @@
+;; exec-path-from-shellを使って環境変数を設定する
+;; common-lisp (exec-path-from-shell-copy-envs '("PATH" "VIRTUAL_ENV" "GOROOT" "GOPATH"))
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (setq exec-path-from-shell-variables '("PATH" "GOPATH"))
+  (exec-path-from-shell-initialize))
+
+
 ;; 日本語設定
 (set-language-environment "Japanese")
-;; 環境を日本語、UTF-8にする
-(set-locale-environment nil)
-(set-language-environment "Japanese")
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-buffer-file-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(prefer-coding-system 'utf-8)
+;; (set-locale-environment nil)
+(set-terminal-coding-system 'utf-8-unix)
+(set-keyboard-coding-system 'utf-8-unix)
+(set-buffer-file-coding-system 'utf-8-unix)
+(setq-default buffer-file-coding-system 'utf-8-unix)
+(prefer-coding-system 'utf-8-unix)
+(set-default-coding-systems 'utf-8-unix)
+
 
 ;; クリップボードを利用する
 (defun copy-from-osx ()
@@ -68,6 +77,7 @@
 ;; migemo
 ;;
 (use-package migemo
+  :ensure t
   :if (and (executable-find "cmigemo") (require 'migemo nil t))
   :init
   (setq migemo-options '("-q" "--emacs"))
@@ -100,9 +110,9 @@
  		 ("M-r" .      helm-resume)
 		 ("C-M-r" .    helm-apropos)
 		 :map helm-find-files-map
-		 ([TAB] .      helm-execute-persistent-action)
+		 ("TAB" .      helm-execute-persistent-action)
 		 :map helm-read-files-map
-		 ([TAB] .      helm-execute-persistent-action)
+		 ("TAB" .      helm-execute-persistent-action)
 		 )
   :config
   (helm-mode 1)
@@ -114,6 +124,11 @@
   :init (setq helm-ag-base-command "ag --nocolor --nogrou")
   :bind (("C-c s" . helm-ag)))
 
+
+(use-package helm-c-yasnippet
+  :ensure t
+  :bind
+  (("C-x y" . helm-yas-complete)))
 
 ;; 
 ;; undo-tree

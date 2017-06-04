@@ -4,13 +4,12 @@
 		 ;; ("C-;" .  skk-mode)
 		; iterm2 では'C-;'をSend Hex Codeとして'0x18 0x40 0x63 0x3b'と値を入力すればターミナル上でも'C-;'が効く
 		 ("C-j" . skk-kakutei-key))
-		 ;; (setq skk-kakutei-key (kbd "C-j"))
   :config
   (setq mac-pass-control-to-system nil)
   ;; skkserv
   (setq skk-server-host "127.0.0.1")
   (setq skk-server-portnum 1178)
-  ;; user dic
+  ;; user dictionary
   (setq skk-jisyo-code 'utf-8)
   (setq skk-jisyo (concat (getenv "HOME") "/Dropbox/skk_jisyo/skk-jisyo.utf8"))
   ;; Enter で改行しない
@@ -28,9 +27,9 @@
   ;; 全角記号の変換
   (setq skk-rom-kana-rule-list
 		'(
-	     ("-" nil "ー")
-		 ("@" nil "＠")
-		 ("!" nil "!")
+	     ("-" nil ("ー" . "-" ))		;(入力される文字列 出力後に自動的に入力に追加される文字列 出力)     出力は ("ア" . "あ") のようなコンスセル
+		 ;; ("@" nil "＠")
+		 ;; ("!" nil "!")
          (":" nil ":")
          (";" nil ";")
          ("?" nil "?")

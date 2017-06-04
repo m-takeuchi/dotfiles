@@ -60,9 +60,20 @@ set -x EDITOR "emacs -nw"
 # For stow setting
 set -x PATH ~/usr/local/bin $PATH
 
+# For pip-installed-with-git executables path
+set -x PATH ~/Library/Python/3.5/bin $PATH
+
 # For pyenv-virtualenv
-status --is-interactive; and . (pyenv init -| psub)
-set -x PATH $HOME/.pyenv/shims $PATH 
+# status --is-interactive; and . (pyenv init - | psub)
+status --is-interactive; and source (pyenv init - | psub)
+set -gx PYENV_ROOT "$HOME/.pyenv"
+# set -x PYENV_VER (pyenv version-name)
+# set -x PATH $PATH "$PYENV_ROOT/bin"
+set -x PATH $PATH "$PYENV_ROOT/shims"
+#set -x PATH $PATH "$PYENV_ROOT/versions/$PYENV_VER/Python.framework/Versions/Current/bin"
+
+# set -x PATH $HOME/.pyenv/shims $PATH
+# status --is-interactive; and . (pyenv init -| psub)
 
 
 # OS-specific settings

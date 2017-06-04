@@ -1,0 +1,149 @@
+IMAPAccount m2gmail
+Host imap.gmail.com
+User m2takeuchi@gmail.com
+PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | sed -n 's,^machine .*password \\\([^ ]*\\) port.*m2gmail,\\1,p')}"
+Port 993
+# UseIMAPS yes
+# RequireSSL yes
+# UseTLSv1.2 yes
+SSLType IMAPS
+CertificateFile /usr/local/etc/openssl/cert.pem
+AuthMechs LOGIN
+# CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+
+IMAPStore m2gmail-remote
+Account m2gmail
+UseNamespace yes
+
+MaildirStore m2gmail-local
+Path ~/Maildir/m2gmail/
+Inbox ~/Maildir/m2gmail/INBOX
+
+Channel m2gmail-inbox
+Master :m2gmail-remote:
+Slave :m2gmail-local:
+Patterns INBOX
+# Create Both
+# Expunge Both
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+Channel m2gmail-sent
+Master :m2gmail-remote:"[Gmail]/&kAFP4W4IMH8w4TD8MOs-"
+Slave :m2gmail-local:Sent
+# Patterns "[Gmail]/&kAFP4W4IMH8w4TD8MOs-"
+# Create Both
+# Expunge Both
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+Channel m2gmail-drafts
+Master :m2gmail-remote:"[Gmail]/&Tgtm+DBN-"
+Slave :m2gmail-local:Drafts
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+Channel m2gmail-important
+Master :m2gmail-remote:"[Gmail]/&kc2JgQ-"
+Slave :m2gmail-local:Important
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+Channel m2gmail-starred
+Master :m2gmail-remote:"[Gmail]/&MLkwvzD8TtgwTQ-"
+Slave :m2gmail-local:Starred
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+Channel m2gmail-archive
+Master :m2gmail-remote:"Archive"
+# Master :m2gmail-remote:"[Gmail]/&MKIw/DCrMKQw1g-"
+Slave :m2gmail-local:Archive
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+# Channel m2gmail-spam
+# Master :m2gmail-remote:"[Gmail]/&MLkw0TDg-"
+# Slave :m2gmail-local:Spam
+# Create Slave
+# Expunge Slave
+# Sync Pull
+# SyncState *
+
+Channel m2gmail-trash
+Master :m2gmail-remote:"[Gmail]/&MLQw33ux-"
+Slave :m2gmail-local:Trash
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+
+Group m2gmail
+Channel m2gmail-inbox
+Channel m2gmail-sent
+Channel m2gmail-draft
+Channel m2gmail-important
+Channel m2gmail-starred
+Channel m2gmail-archive
+Channel m2gmail-trash
+# Channel m2gmail-spam
+
+
+##### kumail at kyoto univ.
+IMAPAccount kumail
+Host mail.iimc.kyoto-u.ac.jp
+User mitsuaki274takeuchi
+PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | sed -n 's,^machine .*password \\\([^ ]*\\) port.*kumail,\\1,p')}"
+Port 993
+# UseIMAPS yes
+# RequireSSL yes
+# UseTLSv1.2 yes
+SSLType IMAPS
+CertificateFile /usr/local/etc/openssl/cert.pem
+# AuthMechs LOGIN
+
+IMAPStore kumail-remote
+Account kumail
+UseNamespace yes
+
+
+MaildirStore kumail-local
+Path ~/Maildir/kumail/
+Inbox ~/Maildir/kumail/INBOX
+
+
+Channel kumail
+Master :kumail-remote:
+Slave :kumail-local:
+Patterns *
+# Create Both
+# Expunge Both
+Create Slave
+Expunge Slave
+Sync Pull
+SyncState *
+
+
+
+# Channel m2gmail-junk
+# Master ":m2gmail-remote:[Gmail]/&j,dg0TDhMPww6w-"
+# Slave :local:INBOX.Gmail.Junk
+# Patterns *
+# Create Both
+# Expunge Both
+# Sync all
+# SyncState *

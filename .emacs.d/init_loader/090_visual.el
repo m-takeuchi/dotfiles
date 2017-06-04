@@ -8,13 +8,18 @@
 ;; (load-theme 'tango-dark t)
 ;; (load-theme 'wombat t)
 
+(use-package nlinum
+  :ensure t
+  :init
+  ;; Indent width
+  (setq default-tab-width 4) ; indent
+  ;; No menu bar
+  (menu-bar-mode -1)
+  :config
+  (global-nlinum-mode t) ;;
+  (setq nlinum-format "%4d ");; 5 桁分の表示領域を確保する
+  )
 
-(global-nlinum-mode t) ;;
-(setq nlinum-format "%4d ");; 5 桁分の表示領域を確保する
-;; Indent width
-(setq default-tab-width 4) ; indent
-;; No menu bar
-(menu-bar-mode -1)
 
 
 ;; ;; タイトルバーwith時計
@@ -110,11 +115,13 @@
 
 ;最小の e2wm 設定例
 (use-package e2wm
+  :ensure t
   :bind (("M-+" . e2wm:start-management)))
 
 
 ;; Show color
 (use-package rainbow-mode
+  :ensure t
   :diminish rainbow-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'rainbow-mode)
@@ -125,123 +132,80 @@
 
 
 
-;; タブエディタ化
-(use-package tabbar
-  :bind (("M-]" . tabbar-forward-tab)
-		 ("M-[" . tabbar-backward-tab)
-		 ("C-M-]" . tabbar-forward-group)
-		 ("C-M-[" . tabbar-backward-group))
+;; ;; タブエディタ化
+;; (use-package tabbar
+;;   :bind (("M-]" . tabbar-forward-tab)
+;; 		 ("M-[" . tabbar-backward-tab)
+;; 		 ("C-M-]" . tabbar-forward-group)
+;; 		 ("C-M-[" . tabbar-backward-group))
 
-  :config
-  (tabbar-mode)
-  (tabbar-mwheel-mode nil)                  ;; マウスホイール無効
-  (setq tabbar-buffer-groups-function nil)  ;; グループ無効
-  (setq tabbar-use-images nil)              ;; 画像を使わない
-  ;; ;;----- 左側のボタンを消す
-  ;; (dolist (btn '(tabbar-buffer-home-button
-  ;;                tabbar-scroll-left-button
-  ;;                tabbar-scroll-right-button))
-  ;;   (set btn (cons (cons "" nil)
-  ;;                  (cons "" nil))))
+;;   :config
+;;   (tabbar-mode)
+;;   (tabbar-mwheel-mode nil)                  ;; マウスホイール無効
+;;   (setq tabbar-buffer-groups-function nil)  ;; グループ無効
+;;   (setq tabbar-use-images nil)              ;; 画像を使わない
+;;   ;; ;;----- 左側のボタンを消す
+;;   ;; (dolist (btn '(tabbar-buffer-home-button
+;;   ;;                tabbar-scroll-left-button
+;;   ;;                tabbar-scroll-right-button))
+;;   ;;   (set btn (cons (cons "" nil)
+;;   ;;                  (cons "" nil))))
 
-  ;;----- タブのセパレーターの長さ
-  (setq tabbar-separator '(1.0))
+;;   ;;----- タブのセパレーターの長さ
+;;   (setq tabbar-separator '(1.0))
 
-  ;;----- タブの色（CUIの時。GUIの時は後でカラーテーマが適用）
-  (set-face-attribute
-   'tabbar-default nil
-   :background "brightblue"
-   :foreground "white"
-   )
-  (set-face-attribute
-   'tabbar-selected nil
-   :background "#ff5f00"
-   :foreground "brightwhite"
-   :box nil
-   )
-  (set-face-attribute
-   'tabbar-modified nil
-   :background "brightred"
-   :foreground "brightwhite"
-   :box nil
-   )
+;;   ;;----- タブの色（CUIの時。GUIの時は後でカラーテーマが適用）
+;;   (set-face-attribute
+;;    'tabbar-default nil
+;;    :background "brightblue"
+;;    :foreground "white"
+;;    )
+;;   (set-face-attribute
+;;    'tabbar-selected nil
+;;    :background "#ff5f00"
+;;    :foreground "brightwhite"
+;;    :box nil
+;;    )
+;;   (set-face-attribute
+;;    'tabbar-modified nil
+;;    :background "brightred"
+;;    :foreground "brightwhite"
+;;    :box nil
+;;    )
 
-  ;;----- 表示するバッファ
-  ;; (defvar my-tabbar-displayed-list
-  ;;   (rx "*scratch*" "*notmuch*" "*mail*"))
+;;   ;;----- 表示するバッファ
+;;   ;; (defvar my-tabbar-displayed-list
+;;   ;;   (rx "*scratch*" "*notmuch*" "*mail*"))
 
-  ;; (defvar my-tabbar-displayed-buffers
-  ;;   '("*scratch*" "*Backtrace*" "*Colors*" "*Faces*" "*notmuch-*" "*unsent mail*"))
-  ;; "*Regexps matches buffer names always included tabs.")
+;;   ;; (defvar my-tabbar-displayed-buffers
+;;   ;;   '("*scratch*" "*Backtrace*" "*Colors*" "*Faces*" "*notmuch-*" "*unsent mail*"))
+;;   ;; "*Regexps matches buffer names always included tabs.")
 
-  ;; ---- 表示しないバッファ
-  (setq my-tabbar-x-list
-		(rx "*helm"
-			"*init log*"
-			;; "Map_Sym.txt"
-			;; ".ipa"
-			))
-
-
-  ;; 1. buffer-list を lambda関数の変数buffer で参照.
-  ;; 2. buffer-name により buffer-list内のバッファ名を取得
-  ;; 3. aref によりバッファ名の0番要素を取得
-  ;; 4. "(find item sequence) ==> itemと等しい最初の要素を返す" により
-  ;;    my-tabbar-x-listから3で取得した要素と等しい最初の要素を返す.
-  ;; 5. "(remove-if predicate sequence)により predicateが真となる要素を取りのぞく" により
-  ;;    buffer-listから4の要素を取り除く
-  (defun my-tabbar-buffer-list ()
-	(remove-if
-	 (lambda (buffer) (find (aref (buffer-name buffer) 0) my-tabbar-x-list))
-	 ;; (lambda (buffer) (find (aref (buffer-name buffer) 1) my-tabbar-x-list) )
-	 (buffer-list)
-	 ;; (add-to-list 'buffer-list my-tabbar-displayed-buffers)
-	 ))
-
-  (setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
-)
+;;   ;; ---- 表示しないバッファ
+;;   (setq my-tabbar-x-list
+;; 		(rx "*helm"
+;; 			"*init log*"
+;; 			;; "Map_Sym.txt"
+;; 			;; ".ipa"
+;; 			))
 
 
-;; カレンダー
-(use-package calfw
-  :ensure t
-  :bind (("C-c C-f" . cfw:open-org-calendar))
-  :config
-  ;; First day of the week
-  (setq calendar-week-start-day 1) ; 0:Sunday, 1:Monday
+;;   ;; 1. buffer-list を lambda関数の変数buffer で参照.
+;;   ;; 2. buffer-name により buffer-list内のバッファ名を取得
+;;   ;; 3. aref によりバッファ名の0番要素を取得
+;;   ;; 4. "(find item sequence) ==> itemと等しい最初の要素を返す" により
+;;   ;;    my-tabbar-x-listから3で取得した要素と等しい最初の要素を返す.
+;;   ;; 5. "(remove-if predicate sequence)により predicateが真となる要素を取りのぞく" により
+;;   ;;    buffer-listから4の要素を取り除く
+;;   (defun my-tabbar-buffer-list ()
+;; 	(remove-if
+;; 	 (lambda (buffer) (find (aref (buffer-name buffer) 0) my-tabbar-x-list))
+;; 	 ;; (lambda (buffer) (find (aref (buffer-name buffer) 1) my-tabbar-x-list) )
+;; 	 (buffer-list)
+;; 	 ;; (add-to-list 'buffer-list my-tabbar-displayed-buffers)
+;; 	 ))
 
-  (when (window-system)
-  ;; Default setting
-  ;; (setq cfw:fchar-junction ?+
-  ;; 		cfw:fchar-vertical-line ?|
-  ;; 		cfw:fchar-horizontal-line ?-
-  ;; 		cfw:fchar-left-junction ?+
-  ;; 		cfw:fchar-right-junction ?+
-  ;; 		cfw:fchar-top-junction ?+
-  ;; 		cfw:fchar-top-left-corner ?+
-  ;; 		cfw:fchar-top-right-corner ?+ )
+;;   (setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
+;; )
 
-  ;; Unicode characters
-  (setq cfw:fchar-junction ?╋
-		cfw:fchar-vertical-line ?┃
-		cfw:fchar-horizontal-line ?━
-		cfw:fchar-left-junction ?┣
-		cfw:fchar-right-junction ?┫
-		cfw:fchar-top-junction ?┯
-		cfw:fchar-top-left-corner ?┏
-		cfw:fchar-top-right-corner ?┓)
 
-  ;; Another unicode chars
-  ;; (setq cfw:fchar-junction ?╬
-  ;; 		cfw:fchar-vertical-line ?║
-  ;; 		cfw:fchar-horizontal-line ?═
-  ;; 		cfw:fchar-left-junction ?╠
-  ;; 		cfw:fchar-right-junction ?╣
-  ;; 		cfw:fchar-top-junction ?╦
-  ;; 		cfw:fchar-top-left-corner ?╔
-  ;; 		cfw:fchar-top-right-corner ?╗)
-  )
-  )
-;; calfw <--> google calendar
-(use-package calfw-gcal
-  :ensure t)

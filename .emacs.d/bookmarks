@@ -3,8 +3,8 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/org/journal.org")
- (front-context-string . "**** conohaのbemp")
- (rear-context-string . " 2017-03-06 月曜日\n")
- (position . 965))
+ (filename . "~/org/todo.org")
+ (front-context-string . "** TODO [#B] 一般酸")
+ (rear-context-string . "%E9%A1%8C][議題]]\n")
+ (position . 16045))
 )
