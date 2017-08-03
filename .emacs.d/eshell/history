@@ -5,3 +5,21 @@ env
 ls
 ls
 sl
+ls
+ls
+cd ..
+ls
+la
+ls -a
+cd .cask
+ls
+cd 25.2
+ls
+ls elpa
+cd elpa
+ls
+find .-name "*.el"
+find . -name "*.el"
+find . -name "*.el" | etags -
+ls
+etags

@@ -17,6 +17,7 @@
   (setq org-latex-default-class "jsarticle")
   (setq org-latex-classes '(("jsarticle"
             "\\documentclass{jsarticle}
+\\usepackage[dvipdfmx]{color}
 \\usepackage[dvipdfmx]{graphicx}
 \\usepackage{url}
 \\usepackage{amsmath,amssymb}
@@ -48,15 +49,28 @@
             ("\\paragraph{%s}" . "\\paragraph*{%s}")
             ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
                ))
+  ;; Table of contents(toc) select
+  (defun org-export-latex-no-toc (depth)
+    (when depth
+      (format "%% Org-mode is exporting headings to %s levels.\n"
+              depth)))
+  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc) ;no toc
+
   :defer 2
   :config
+  ;; Size of latex formula
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+  (setq org-export-latex-table-caption-above t) ;表のキャプションは上
   (setq org-startup-indented t)			;デフォルトでインデント表示
   ;tagのショ-トカット
   (setq org-tag-alist '(("work" . ?w)
 						("edu" . ?E)
+						("duty" . ?d)
 						("conf" . ?c)
 						("semi" . ?s)
 						("lab" . ?l)
+						("RBS" . ?r)
 						("home" . ?h)
 						("jobhant" . ?j)
 						("IL3DP" . ?3)
@@ -72,8 +86,11 @@
 		'(
 		  ;; ("a" "Appointment" entry (file  "~/org/agenda/schedule.org" )
 		   ;; "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
+   		  ;; ("a" "Appointment" entry (file  "~/org/agenda/schedule.org" )
    		  ("a" "Appointment" entry (file  "~/org/agenda/gcal.org" )
-   		   "* %?\n\n%^T\n\n")
+   		   ;; "* %?\n\n%^T\n\n")
+		   ;; "* %?\n%a")
+		   "* %?\n  %^T\n\n")
 		  ("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
 		   "* TODO %?\nEntered on %U\n%a")
 		  ("j" "Journal" entry (file+datetree "~/org/journal.org")
@@ -96,6 +113,11 @@
   ;; TODOの状態をカスタマイズ ‘!’ (for a timestamp) or ‘@’ (for a note with timestamp) 
   (setq org-todo-keywords
 		'((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+  (setq org-todo-keyword-faces
+		'(("TODO(t)" . org-warning)
+		  ("WAIT" . "yellow")
+		  ("CANCELED" . (:foreground "blue" :weight bold))
+		  ))
 
   ;; ;; セレクションメニューから状態の変更を行えるようにする
   ;; (setq org-use-fast-todo-selection t)
@@ -113,19 +135,25 @@
   ;; (setq org-agenda-clockreport-parameter-plist
   ;;       '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :formula nil :timestamp t :level 5 :tcolumns nil :formatter nil))
 
+  ;; inline imageのサイズ
+  (setq org-image-actual-width nil)
+  ;; (add-to-list 'image-file-name-extensions "bmp")
 
+  ;; いつもインライン表示
+  (setq org-startup-with-inline-images t)
   )
 
 
-;; (use-package org-gcal
-;;   :config
-;;   (setq org-gcal-client-id "962444117670-s71q0hh4ikaqalmiiju5tgb52llbpba6.apps.googleusercontent.com"
-;; 		org-gcal-client-secret (my:auth-source-get-passwd :port "org-gcal" :login org-gcal-client-id)
-;; 		org-gcal-file-alist '(("m2takeuchi@gmail.com" .  "~/org/agenda/gcal.org")
-;; 		("4u3ihjp7epih5fot8huvhk10k8@group.calendar.google.com" .  "~/org/agenda/gcal_private.org")))
-;;   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-;;   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-;; )
+(use-package org-gcal
+  :config
+  (setq org-gcal-client-id "962444117670-1e7hvul636qj3g0l6egmnojjeh1bno9m.apps.googleusercontent.com"
+		org-gcal-client-secret (my:auth-source-get-passwd :port "org-gcal" :login org-gcal-client-id)
+		org-gcal-file-alist
+		'(("m2takeuchi@gmail.com" .  "~/org/agenda/gcal.org")
+		("4u3ihjp7epih5fot8huvhk10k8@group.calendar.google.com" .  "~/org/agenda/gcal_private.org")))
+  (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+  (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+)
 
 
 ;; emacsのカレンダーで日本の祝日にする.
@@ -157,7 +185,6 @@
 		'("c" "calfw2org" entry 
 		  (file "~/org/agenda/gcal.org")
 		  "*  %?\n %(cfw:org-capture-day)"))
-
   :config
   ;; First day of the week
   (setq calendar-week-start-day 1) ; 0:Sunday, 1:Monday
@@ -196,27 +223,45 @@
   )
   )
 ;; calfw <--> google calendar
-(use-package calfw-gcal
-  :ensure t)
+;; (use-package calfw-gcal
+;;   :ensure t)
+
+;; calfw <--> ical, etc, google calendar
+(use-package calfw-ical)
+
+
 
 ;; カレンダー calfw との連携
 ;; calfw <--> org-agenda
 (use-package calfw-org
-  ;; :ensure t
   :preface
   (defun cfw:open-calendar ()
-	(interactive)
-	(let ((cp
-		   (cfw:create-calendar-component-buffer
-			:view 'month
-			:contents-sources
-			(list 
-			 (cfw:org-create-file-source
-			  "work" "~/org/agenda/gcal.org" "#268bd2")
-			 (cfw:org-create-file-source
-			  "private" "~/org/agenda/gcal_private.org" "#859900")))))
-	  (switch-to-buffer (cfw:cp-get-buffer cp))))
-
+  	(interactive)
+  	(let ((cp
+  		   (cfw:create-calendar-component-buffer
+  			:view 'month
+  			:contents-sources
+  			(list 
+  			 (cfw:org-create-file-source
+  			  "work" "~/org/agenda/gcal.org" "#268bd2")
+  			 (cfw:org-create-file-source
+  			  "private" "~/org/agenda/gcal_private.org" "#859900")
+  			 (cfw:org-create-file-source
+  			  "work_local" "~/org/agenda/schedule.org" "#F68FFF")
+  			 ))))
+  	  (switch-to-buffer (cfw:cp-get-buffer cp))))
+  (defun my-open-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source "Green")  ; orgmode source
+    ;; (cfw:howm-create-source "Blue")  ; howm source
+    ;; (cfw:cal-create-source "Orange") ; diary source
+    ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+    (cfw:ical-create-source "gcal" "https://calendar.google.com/calendar/ical/m2takeuchi%40gmail.com/private-3c5c7483ac28e4d9cc6cbbef891011ed/basic.ics" "IndianRed") ; google calendar ICS
+	)))
+    :bind (("C-c f" . cfw:open-calendar))
   )
 
 
@@ -233,3 +278,43 @@
 ;; MTA notmuch との連携
 (use-package org-notmuch
   :ensure org-plus-contrib)				;orgのリポジトリを追加しておく必要あり
+
+;; org --> latexにおいてsubfigureを使う
+(use-package ox-latex-subfigure
+  :init
+  (setq org-latex-caption-above nil
+        org-latex-prefer-user-labels t)
+  :load-path "~/.emacs.d/site-lisp/ox-latex-subfigure/"
+  :config (require 'ox-latex-subfigure))
+
+
+;; ipython
+(use-package ob-ipython
+  :preface
+  ;; ソースコードを書き出すコマンド
+  (defun org-babel-tangle-and-execute ()
+	(interactive)
+	(org-babel-tangle)
+	(org-babel-execute-buffer)
+	(org-display-inline-images))
+  (org-babel-do-load-languages 'org-babel-load-languages 
+							   '((emacs-lisp . t)
+								 (shell . t)
+                               (ipython . t)))
+  :bind ( :map org-mode-map
+			  ("C-c C-v C-m" . org-babel-tangle-and-execute)
+		 )
+  :config
+  ;; For avoiding error message described in https://github.com/gregsexton/ob-ipython/issues/89
+  (setq ob-ipython-command "ipython3")
+  ;; コードを評価するとき尋ねない
+  (setq org-confirm-babel-evaluate nil)
+  ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+)
+
+
+(org-babel-do-load-languages 'org-babel-load-languages 
+							   '((emacs-lisp . t)
+								 (shell . t)
+                               (ipython . t)))

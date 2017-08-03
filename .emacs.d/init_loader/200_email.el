@@ -6,14 +6,17 @@
   :preface
 
   ;; リンクを規定ブラウザで開く
-   (when (equal system-type 'darwin)
-   	 (setq browse-url-browser-function 'browse-url-default-macosx-browser))
-   (when (equal system-type 'linux)
+  (when (equal system-type 'darwin)
+	(setq browse-url-browser-function 'browse-url-default-macosx-browser)
+    ;; (setq browse-url-browser-function 'w3m-browse-url)
+	)
+  (when (equal system-type 'linux)
    	 (setq browse-url-browser-function 'eww-browse-url))
 
   ;; 日本語に関する設定
-  ;; (setq mm-coding-system-priorities  '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1))
-  (setq mm-coding-system-priorities  '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1 cp50220))
+  (setq mm-coding-system-priorities
+		;; '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1))
+		 '(utf-8 iso-2022-jp iso-2022-jp-2 shift_jis iso-8859-1 cp50220))
   (setq mm-use-ultra-safe-encoding t)
   (setq message-sendmail-envelope-from 'header)
   (setq	mail-specify-envelope-from 'header)
@@ -161,6 +164,7 @@
 		  (:name "unread" :query "tag:unread" :key "u")
 		  (:name "flagged" :query "tag:flagged" :key "f")
   		  (:name "flagged-work" :query "tag:flagged and tag:kumail" :key "F")
+  		  (:name "mail magazine" :query "tag:magazine" :key "m")
 		  (:name "sent" :query "tag:sent" :key "t")
 		  (:name "drafts" :query "tag:draft" :key "d")
 		  (:name "archive" :query "-tag:inbox" :key "A")

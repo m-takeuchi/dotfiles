@@ -12,6 +12,7 @@ AuthMechs LOGIN
 # CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 
+### Storeの設定 for gmail 
 IMAPStore m2gmail-remote
 Account m2gmail
 UseNamespace yes
@@ -20,6 +21,7 @@ MaildirStore m2gmail-local
 Path ~/Maildir/m2gmail/
 Inbox ~/Maildir/m2gmail/INBOX
 
+### Channelの設定 for gmail 
 Channel m2gmail-inbox
 Master :m2gmail-remote:
 Slave :m2gmail-local:
@@ -116,6 +118,7 @@ SSLType IMAPS
 CertificateFile /usr/local/etc/openssl/cert.pem
 # AuthMechs LOGIN
 
+### Storeの設定 for kumail
 IMAPStore kumail-remote
 Account kumail
 UseNamespace yes
@@ -126,18 +129,98 @@ Path ~/Maildir/kumail/
 Inbox ~/Maildir/kumail/INBOX
 
 
-Channel kumail
+Channel kumail-inbox
 Master :kumail-remote:
 Slave :kumail-local:
-Patterns *
-# Create Both
-# Expunge Both
+Patterns INBOX
+# Create Slave
+# Expunge Slave
+# Sync Pull
+## 双方向に同期する設定 ここから
+Create Both
+Expunge Both
+Sync all
+## ここまで
+SyncState *
+
+Channel kumail-draft
+Master :kumail-remote:
+Slave :kumail-local:
+Patterns draft
+# Create Slave
+# Expunge Slave
+# Sync Pull
+## 双方向に同期する設定 ここから
+Create Both
+Expunge Both
+Sync all
+## ここまで
+SyncState *
+
+Channel kumail-sent
+Master :kumail-remote:
+Slave :kumail-local:
+Patterns sent
+# Create Slave
+# Expunge Slave
+# Sync Pull
+## 双方向に同期する設定 ここから
+Create Both
+Expunge Both
+Sync all
+## ここまで
+SyncState *
+
+Channel kumail-archive
+Master :kumail-remote:Archive
+Slave :kumail-local:Archive
+# Patterns archive
+# Create Slave
+# Remove Slave
+# Expunge Slave
+# Sync Pull
+# Create Master
+# Expunge Master
+Create Both
+Expunge Both
+Sync All
+# Sync Push
+SyncState *
+
+Channel kumail-trash
+Master :kumail-remote:
+Slave :kumail-local:
+Patterns trash
 Create Slave
 Expunge Slave
 Sync Pull
+## 双方向に同期する設定 ここから
+# Create Both
+# Expunge Both
+# Sync all
+## ここまで
+SyncState *
+
+Channel kumail-spam
+Master :kumail-remote:
+Slave :kumail-local:
+Patterns SPAM
+Create Slave
+Expunge Slave
+Sync Pull
+## 双方向に同期する設定 ここから
+# Create Both
+# Expunge Both
+# Sync all
+## ここまで
 SyncState *
 
 
+Group kumail
+Channel kumail-inbox
+Channel kumail-draft
+Channel kumail-sent
+Channel kumail-archive
 
 # Channel m2gmail-junk
 # Master ":m2gmail-remote:[Gmail]/&j,dg0TDhMPww6w-"

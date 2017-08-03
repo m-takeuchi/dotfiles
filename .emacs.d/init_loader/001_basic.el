@@ -103,6 +103,7 @@
   :bind (("C-c h" .    helm-mini)
 	     ("C-x b" .    helm-buffers-list)
 		 ("C-x b" .    helm-for-files)
+	 	 ("C-x t" .    helm-imenu)
 		 ("C-x r" .    helm-recentf)
          ("C-x C-f" .  helm-find-files)
 		 ("M-x" .      helm-M-x)
@@ -144,9 +145,9 @@
 
 
 ;;; mostly equivalent (see below about fallbacks) but shorter:
-(setq auth-sources '((:source "~/dotfiles_secret/google_dev.gpg")))
+;; (setq auth-sources '((:source "~/dotfiles_secret/google_dev.gpg")))
 ;;; even shorter and the _default_:
-;; (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+(setq auth-sources '("~/dotfiles_secret/google_dev.gpg" "~/dotfiles_secret/email_keys.gpg"))
 
 ;; EasyPGを利用したmy関数
 (use-package cl)
@@ -154,3 +155,6 @@
   (let ((founds (apply 'auth-source-search spec)))
     (when founds
       (funcall (plist-get (nth 0 founds) :secret)))))
+
+;; generic-x
+(use-package generic-x)

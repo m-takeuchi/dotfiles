@@ -1,12 +1,30 @@
 ;;;; Visual settings
 
 ;; (load-theme 'adwaita t)
-(load-theme 'deeper-blue t)
+;; (load-theme 'deeper-blue t)
+;; (load-theme 'afternoon t)
+;; (load-theme 'atom-one-dark t)
+(load-theme 'atom-dark t)
 ;; (load-theme 'misterioso t)
 ;; (load-theme 'manoj-dark t)
 ;; (load-theme 'wheatgrass t)
 ;; (load-theme 'tango-dark t)
 ;; (load-theme 'wombat t)
+
+
+;; カレントバッファを固定
+(defvar sticky-buffer-previous-header-line-format)
+(define-minor-mode sticky-buffer-mode
+  "Make the current window always display this buffer."
+  nil " sticky" nil
+  (if sticky-buffer-mode
+      (progn
+        (set (make-local-variable 'sticky-buffer-previous-header-line-format)
+             header-line-format)
+        (set-window-dedicated-p (selected-window) sticky-buffer-mode))
+    (set-window-dedicated-p (selected-window) sticky-buffer-mode)
+    (setq header-line-format sticky-buffer-previous-header-line-format)))
+
 
 (use-package nlinum
   :ensure t

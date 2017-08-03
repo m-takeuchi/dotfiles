@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: org-ipython
+# key: orgipy
+# --
+#+BEGIN_SRC ipython :session :file ${1:filename}.png :exports results
+import matplotlib.pyplot as plt
+import numpy as np
+%config InlineBackend.figure_format = 'png'
+%matplotlib inline
+$0
+#+END_SRC
