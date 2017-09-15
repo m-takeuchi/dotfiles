@@ -34,3 +34,21 @@
   (which-key-mode 1)
   ;; (setq which-key-use-C-h-commands t) ;うまくいかない --> ?を押すと良いみたい
   )
+
+(use-package imenu-anywhere
+  :ensure t
+  ;; :init (global-set-key (kbd "C-.") 'imenu-anywhere)
+  :init (global-set-key (kbd "C-.") 'helm-imenu-anywhere)
+  :config
+  (setq imenu-auto-rescan 1) 			;auto rescan
+  (defun jcs-use-package ()
+            (add-to-list 'imenu-generic-expression
+             '("Used Packages"
+               "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2)))
+  (defun jcs-begin-block ()
+            (add-to-list 'imenu-generic-expression
+             '("Begin Block"
+               "\\\begin\\{block\\}\\(\\_<.+\\_>\\)" 2)))
+  (add-hook 'emacs-lisp-mode-hook #'jcs-use-package)
+  (add-hook 'org-mode-hook #'jcs-begin-block)
+  )

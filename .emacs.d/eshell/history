@@ -23,3 +23,8 @@ find . -name "*.el"
 find . -name "*.el" | etags -
 ls
 etags
+ls
+ls
+tmux -a
+tmux attach
+tmux

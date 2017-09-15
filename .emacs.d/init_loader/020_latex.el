@@ -16,12 +16,17 @@
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-PDF-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook (lambda () (TeX-fold-mode 1))) ;Foldingを有効にする
 (add-hook 'LaTeX-mode-hook
           (function (lambda ()
-                      (add-to-list 'TeX-command-list
-                                   '("Latexmk"
-                                     "/Library/TeX/texbin/latexmk %t"
-                                     TeX-run-TeX nil (latex-mode) :help "Run Latexmk"))
+                      (add-to-list 'TeX-command-list '("Latexmk"
+                                   "/Library/TeX/texbin/latexmk %t"
+                                   TeX-run-TeX nil (latex-mode) :help
+                                   "Run Latexmk"))
+                      (add-to-list 'TeX-command-list '("Lualatex"
+                                   "/Library/TeX/texbin/lualatex %t"
+                                   TeX-run-TeX nil (latex-mode) :help
+                                   "Run Lualatex"))
                       (add-to-list 'TeX-command-list
                                    '("Latexmk-upLaTeX-pdfdvi"
                                      "/Library/TeX/texbin/latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"

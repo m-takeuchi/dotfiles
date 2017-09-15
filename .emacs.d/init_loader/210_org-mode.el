@@ -8,14 +8,51 @@
 
   :init
   (setq my-org-directory "~/org/") ; link to ~/Dropbox/org
-  ;; (setq my-org-agenda-directory "~/org/agenda/")
-  ;; (setq org-agenda-files (list my-org-directory my-org-agenda-directory))
-  (setq org-agenda-files '("~/org" "~/org/agenda"))
+  (setq my-org-agenda-directory "~/org/agenda/")
+  (setq org-agenda-files (list my-org-directory my-org-agenda-directory))
+  ;; (setq org-agenda-files '("~/org" "~/org/agenda"))
+
   ;; For org latex export
   (setq org-latex-pdf-process
-		'("latexmk %f"))
-  (setq org-latex-default-class "jsarticle")
-  (setq org-latex-classes '(("jsarticle"
+		;; '("latexmk %f"))
+  		'("latexmk -lualatex %f"))
+  		;; '("lualatex %f"))
+  ;; (setq org-latex-default-class "jsarticle")
+  (setq org-latex-default-class "ltjsarticle")
+  (setq org-latex-classes '(
+               ("ltjsarticle"
+               "\\documentclass{ltjsarticle}
+\\usepackage{amsmath,amssymb}
+\\usepackage{listings}
+\\usepackage[safe]{tipa}
+\\usepackage[no-math]{fontspec}
+\\usepackage{luatexja}
+\\usepackage{amsmath,amssymb}
+\\usepackage{listings}
+\\usepackage[safe]{tipa}
+\\usepackage[no-math]{fontspec}
+\\usepackage{luatexja-otf}
+\\usepackage[match]{luatexja-fontspec}
+\\usepackage[hiragino-pron,deluxe,expert]{luatexja-preset}
+\\usepackage{booktabs}
+\\usepackage{tabularx}
+\\usepackage{tikz}               %tikzでダイアグラムを作図
+\\usetikzlibrary{arrows.meta}    %tikzの拡張ライブラリ読み込み
+\\usepackage{pgfplots}
+\\usetikzlibrary{arrows,quotes,angles}
+\\usetikzlibrary{positioning,calc}
+\\usepackage{textpos}               %紙面絶対位置でテキストボックスを入れる
+\\usepackage[pdftex,pdfencoding=auto]{hyperref}
+\\usepackage{svg}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+			("jsarticle"
             "\\documentclass{jsarticle}
 \\usepackage[dvipdfmx]{color}
 \\usepackage[dvipdfmx]{graphicx}
@@ -94,7 +131,12 @@
 		  ("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
 		   "* TODO %?\nEntered on %U\n%a")
 		  ("j" "Journal" entry (file+datetree "~/org/journal.org")
-		   "* %?\nEntered on %U\n%i\n%a")))
+		   "* %?\nEntered on %U\n%i\n%a")
+		  ("J" "Jobhant" entry (file+headline "~/org/jobhant.org" "Jobhant")
+		   "* %?\nEntered on %U\n%a\n")
+		  ("p" "Project" entry (file+headline "~/org/project.org" "Project")
+		   "* %?\nEntered on %U\n%a\n")
+		))
 
   ;; agenda
   ;; 時間表示が 1 桁の時, 0 をつける
@@ -151,8 +193,10 @@
 		org-gcal-file-alist
 		'(("m2takeuchi@gmail.com" .  "~/org/agenda/gcal.org")
 		("4u3ihjp7epih5fot8huvhk10k8@group.calendar.google.com" .  "~/org/agenda/gcal_private.org")))
-  (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-  (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+  ;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+  ;; (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+  (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-fetch) ))
+  (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-fetch) ))
 )
 
 
@@ -297,10 +341,6 @@
 	(org-babel-tangle)
 	(org-babel-execute-buffer)
 	(org-display-inline-images))
-  (org-babel-do-load-languages 'org-babel-load-languages 
-							   '((emacs-lisp . t)
-								 (shell . t)
-                               (ipython . t)))
   :bind ( :map org-mode-map
 			  ("C-c C-v C-m" . org-babel-tangle-and-execute)
 		 )
@@ -313,8 +353,11 @@
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 )
 
-
+;; babelをアクティベイトする言語
 (org-babel-do-load-languages 'org-babel-load-languages 
 							   '((emacs-lisp . t)
 								 (shell . t)
+								 (latex . t)
+								 (org . t)
+								 (python . t)
                                (ipython . t)))

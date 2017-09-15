@@ -4,7 +4,11 @@
 		 ;; ("C-;" .  skk-mode)
 		; iterm2 では'C-;'をSend Hex Codeとして'0x18 0x40 0x63 0x3b'と値を入力すればターミナル上でも'C-;'が効く
 		 ("C-j" . skk-kakutei-key))
+		 ;; ("C-c $" . skk-display-code-for-char-at-point))
+
   :config
+  (unbind-key "$" skk-j-mode-map)		;かなモードで$を入力したときに漢字コードを表示するのを無効化する
+
   (setq mac-pass-control-to-system nil)
   ;; skkserv
   (setq skk-server-host "127.0.0.1")
@@ -41,7 +45,7 @@
   ;;   (aset skk-jisx0208-latin-vector ?- (string #xFF0D))
   ;;   (aset skk-jisx0208-latin-vector ?~ (string #xFF5E)))
   ;; @で挿入する日付表示を西暦&半角に
-  (setq skk-date-ad t)
+  ;; (setq skk-date-ad t)
   (setq skk-number-style nil)
   ;; 送り仮名が厳密に正しい候補を優先
   (setq skk-henkan-strict-okuri-precedence t)
@@ -73,7 +77,7 @@
   ;; '(skk-use-face t)
   ;; '(skk-use-jisx0201-input-method nil)
   ;; '(skk-use-look nil)
-  ;; '(skk-use-numeric-conversion t)
+  ;; '(skk-use-numeric-conversion nil)
   ;; '(skk-verbose nil)
 
 

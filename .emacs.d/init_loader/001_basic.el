@@ -123,7 +123,7 @@
 (use-package helm-ag
   :ensure t
   :init (setq helm-ag-base-command "ag --nocolor --nogrou")
-  :bind (("C-c s" . helm-ag)))
+  :bind (("C-c s" . helm-do-ag)))
 
 
 (use-package helm-c-yasnippet

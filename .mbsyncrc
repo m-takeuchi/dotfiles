@@ -158,9 +158,9 @@ Sync all
 SyncState *
 
 Channel kumail-sent
-Master :kumail-remote:
-Slave :kumail-local:
-Patterns sent
+Master :kumail-remote:sent
+Slave :kumail-local:Sent
+# Patterns sent
 # Create Slave
 # Expunge Slave
 # Sync Pull

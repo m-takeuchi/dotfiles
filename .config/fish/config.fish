@@ -52,7 +52,7 @@ end
 set -x XAPIAN_CJK_NGRAM 1
 
 # pkg_config
-set -x PKG_CONFIG_PATH /usr/local/lib/pkgconfig /opt/X11/lib/pkgconfig
+set -x PKG_CONFIG_PATH /usr/local/opt/zlib/lib/pkgconfig /usr/local/lib/pkgconfig /opt/X11/lib/pkgconfig
 
 # export EDITOR=emacs
 set -x EDITOR "emacs -nw"
@@ -85,3 +85,4 @@ switch (uname)
 	case Linux
 		# source $HOME/.dotfiles/shell/fish/OS/linux.fish
     end
+set -g fish_user_paths "/usr/local/opt/gpg-agent/bin" $fish_user_paths
