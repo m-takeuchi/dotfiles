@@ -23,7 +23,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 # export DISPLAY=":0.0"
 
 # export EDITOR=emacs
-export EDITOR="emacs -nw"
+# export EDITOR="emacs -nw"
 
 #export MANPATH=~/bin/man:$MANPATH
 #export LD_LIBRARY_PATH=/Users/m-takeuchi/src/Minuit-1_7_9/src/.libs:$LD_LIBRARY_PATH

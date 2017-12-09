@@ -53,6 +53,7 @@ values."
      pdf-tools
      extra-langs
      emoji ; :+1:
+     (ibuffer :variables ibuffer-group-buffers-by 'modes) ;modes or projects or nil
      ;; gnus
      ;; spell-checking
      ;; syntax-checking
@@ -325,6 +326,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;; For compiling pdf-tools
   (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -335,6 +337,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; For reordering notmuch buffer
+  (push "\\*notmuch-.+\\*" spacemacs-useful-buffers-regexp)
   ;; C-x C-c で容易にEmacsを終了させないように質問する.
   (setq confirm-kill-emacs 'y-or-n-p)
 
@@ -897,7 +901,7 @@ you should place your code here."
     ("/Users/m-takeuchi/org/Getting Started with Orgzly.org" "/Users/m-takeuchi/org/appointments.org" "/Users/m-takeuchi/org/jobhant.org" "/Users/m-takeuchi/org/project.org" "/Users/m-takeuchi/org/project_hoby.org" "/Users/m-takeuchi/org/todo.org" "/Users/m-takeuchi/org/agenda/educo.org" "/Users/m-takeuchi/org/agenda/gcal.org" "/Users/m-takeuchi/org/agenda/gcal_private.org" "/Users/m-takeuchi/org/agenda/schedule.org")))
  '(package-selected-packages
    (quote
-    (ghub let-alist emoji-cheat-sheet-plus company-emoji thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode insert-shebang fish-mode company-shell xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex helm-notmuch gnus-alias origami migemo org-gcal request-deferred deferred pdf-tools tablist ob-ipython dash-functional notmuch cp5022x org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ddskk cdb ccc unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (ibuffer-projectile ghub let-alist emoji-cheat-sheet-plus company-emoji thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode insert-shebang fish-mode company-shell xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex helm-notmuch gnus-alias origami migemo org-gcal request-deferred deferred pdf-tools tablist ob-ipython dash-functional notmuch cp5022x org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ddskk cdb ccc unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

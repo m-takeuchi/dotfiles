@@ -1,1 +1,0 @@
-#s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data ((ignore-errors (ghubp-get-repos-owner-repo (quote nil))) ((22829 4169 831487 0))))

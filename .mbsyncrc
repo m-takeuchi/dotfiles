@@ -1,7 +1,7 @@
 IMAPAccount m2gmail
 Host imap.gmail.com
 User m2takeuchi@gmail.com
-PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | sed -n 's,^machine .*password \\\([^ ]*\\) port.*m2gmail,\\1,p')}"
+PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | /usr/bin/sed -n 's,^machine .*password \\\([^ ]*\\) port.*m2gmail,\\1,p')}"
 Port 993
 # UseIMAPS yes
 # RequireSSL yes
@@ -39,9 +39,13 @@ Slave :m2gmail-local:Sent
 # Patterns "[Gmail]/&kAFP4W4IMH8w4TD8MOs-"
 # Create Both
 # Expunge Both
-Create Slave
-Expunge Slave
-Sync Pull
+# Create Slave
+# Expunge Slave
+# Sync Pull
+## 双方向に同期する設定 ここから
+Create Both
+Expunge Both
+Sync all
 SyncState *
 
 Channel m2gmail-drafts
@@ -109,7 +113,7 @@ Channel m2gmail-trash
 IMAPAccount kumail
 Host mail.iimc.kyoto-u.ac.jp
 User mitsuaki274takeuchi
-PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | sed -n 's,^machine .*password \\\([^ ]*\\) port.*kumail,\\1,p')}"
+PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | /usr/bin/sed -n 's,^machine .*password \\\([^ ]*\\) port.*kumail,\\1,p')}"
 Port 993
 # UseIMAPS yes
 # RequireSSL yes

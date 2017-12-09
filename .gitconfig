@@ -3,5 +3,8 @@
 	name = Mitsuaki Takeuchi
 [push]
 	default = simple
-[core]
-	editor = emacs -nw
+# [core]
+	# editor = emacs -nw
+[github]
+	user = m-takeuchi
+	oauth-token = f74660843faaf01033091be74d104eb2090dc013
