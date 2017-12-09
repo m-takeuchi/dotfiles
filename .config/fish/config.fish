@@ -52,13 +52,17 @@ end
 set -x XAPIAN_CJK_NGRAM 1
 
 # pkg_config
-set -x PKG_CONFIG_PATH /usr/local/opt/zlib/lib/pkgconfig /usr/local/lib/pkgconfig /opt/X11/lib/pkgconfig
+set -x PKG_CONFIG_PATH /usr/local/opt/poppler/lib/pkgconfig /usr/local/opt/zlib/lib/pkgconfig /usr/local/lib/pkgconfig /opt/X11/lib/pkgconfig 
 
 # export EDITOR=emacs
-set -x EDITOR "emacs -nw"
+#set -x EDITOR "emacs -nw"
+set -x EDITOR "vim"
 
 # For stow setting
 set -x PATH ~/usr/local/bin $PATH
+
+# For sleepwatcher
+set -x PATH /usr/local/sbin $PATH
 
 # For pip-installed-with-git executables path
 set -x PATH ~/Library/Python/3.5/bin $PATH
@@ -66,11 +70,11 @@ set -x PATH ~/Library/Python/3.5/bin $PATH
 # For pyenv-virtualenv
 # status --is-interactive; and . (pyenv init - | psub)
 status --is-interactive; and source (pyenv init - | psub)
-set -gx PYENV_ROOT "$HOME/.pyenv"
+set -gx PYENV_ROOT $HOME/.pyenv
 # set -x PYENV_VER (pyenv version-name)
-# set -x PATH $PATH "$PYENV_ROOT/bin"
-set -x PATH $PATH "$PYENV_ROOT/shims"
-#set -x PATH $PATH "$PYENV_ROOT/versions/$PYENV_VER/Python.framework/Versions/Current/bin"
+# set -x PATH $PATH $PYENV_ROOT/bin
+set -x PATH $PATH $PYENV_ROOT/shims
+#set -x PATH $PATH $PYENV_ROOT/versions/$PYENV_VER/Python.framework/Versions/Current/bin
 
 # set -x PATH $HOME/.pyenv/shims $PATH
 # status --is-interactive; and . (pyenv init -| psub)
@@ -85,4 +89,5 @@ switch (uname)
 	case Linux
 		# source $HOME/.dotfiles/shell/fish/OS/linux.fish
     end
-set -g fish_user_paths "/usr/local/opt/gpg-agent/bin" $fish_user_paths
+
+#set -g fish_user_paths /usr/local/opt/gpg-agent/bin $fish_user_paths
