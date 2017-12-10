@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: org-ipython
+# key: orgipy
+# --
+#+BEGIN_SRC ipython :session :ipyfile ${1:filename}.png :exports raw
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+%config InlineBackend.figure_format = 'png'
+%matplotlib inline
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+# Background color
+fig.patch.set_facecolor('white')
+fig.patch.set_alpha(0.0)
+ax.patch.set_facecolor('white')
+ax.patch.set_alpha(1.0)
+
+$0
+#+END_SRC

@@ -369,7 +369,7 @@
   (setq org-confirm-babel-evaluate nil)
   ;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-)
+) 
 
 ;; babelをアクティベイトする言語
 (org-babel-do-load-languages 'org-babel-load-languages 

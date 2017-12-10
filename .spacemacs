@@ -27,10 +27,15 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path
+   '(
+     "~/dotfiles/my_private_layer"
+     )
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     csv
+     python
      shell-scripts
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -38,7 +43,13 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-complete-with-key-sequence-delay 0.1
+                      auto-completion-private-snippets-directory "~/dotfiles/snippets")
      better-defaults
      emacs-lisp
      git
@@ -52,8 +63,11 @@ values."
             latex-enable-folding t)
      pdf-tools
      extra-langs
-     emoji ; :+1:
+     emoji ;; :+1:
      (ibuffer :variables ibuffer-group-buffers-by 'modes) ;modes or projects or nil
+     twitter
+     w3m
+     ;; osx
      ;; gnus
      ;; spell-checking
      ;; syntax-checking
@@ -73,6 +87,7 @@ values."
      ob-ipython
      migemo
      gnus-alias
+     outline-magic
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -232,7 +247,7 @@ values."
    dotspacemacs-enable-paste-transient-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 0.2
+   dotspacemacs-which-key-delay 0.4
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
@@ -286,7 +301,7 @@ values."
    dotspacemacs-line-numbers nil
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
-   dotspacemacs-folding-method 'evil
+   dotspacemacs-folding-method 'origami
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -317,6 +332,7 @@ values."
    dotspacemacs-whitespace-cleanup nil
    ))
 
+
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init', before layer configuration
@@ -326,6 +342,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;; For compiling pdf-tools
   (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
+  (setenv "XAPIAN_CJK_NGRAM" "1")       ;For japanese search in notmuch
 
   )
 
@@ -345,16 +362,15 @@ you should place your code here."
   ;; original keybindings ここに設定で良いのだろうか？
   (progn
     (bind-key "C-h" 'delete-backward-char) ;; Set C-h to backspace
-    (bind-key "C-\\" 'evil-toggle-fold)    ;; コードの折り畳み
+    (bind-key "C-\\" 'hs-toggle-hiding)    ;; コードの折り畳み
     (bind-key "C-x C-j"  'skk-mode)        ;; skk
     (bind-key "C-x t"    'helm-imenu)
     (bind-key "C-x C-f"  'helm-find-files)
     (bind-key "M-y"      'helm-show-kill-ring)
     (bind-key "M-r"      'helm-resume)
     ;; (bind-key "C-\\"      'spacemacs/fold-transient-state/origami-toggle-all-nodes)
-  )
+    )
 
- 
   ;;; mostly equivalent (see below about fallbacks) but shorter:
   ;; (setq auth-sources '((:source "~/dotfiles_secret/google_dev.gpg")))
   ;;; even shorter and the _default_:
@@ -365,6 +381,27 @@ you should place your code here."
     (let ((founds (apply 'auth-source-search spec)))
       (when founds
         (funcall (plist-get (nth 0 founds) :secret)))))
+
+  ;; コード折り畳みorigamiのカスタマイズ http://emacs.rubikitch.com/origami/
+  (with-eval-after-load 'origami
+    (require 'outline-magic)            ;http://emacs.rubikitch.com/outline-magic/
+    ;; (makunbound 'origami-view-mode-map)
+    (define-minor-mode origami-view-mode
+      "TABにorigamiの折畳みを割り当てる"
+      nil "折紙"
+      '(("\C-i" . origami-cycle))
+      (or origami-mode (origami-mode 1)))
+    (defun origami-cycle (recursive)
+      "origamiの機能をorg風にまとめる"
+      (interactive "P")
+      (call-interactively
+       (if recursive 'origami-toggle-all-nodes 'origami-toggle-node)))
+    (defun view-mode-hook--origami ()
+      (when (memq major-mode (mapcar 'car origami-parser-alist))
+        (origami-view-mode (if view-mode 1 -1))))
+    (add-hook 'view-mode-hook 'view-mode-hook--origami)
+
+  )
 
   ;; 日本語入力ddskk
   (with-eval-after-load 'skk
@@ -414,7 +451,7 @@ you should place your code here."
     (setq skk-share-private-jisyo t)
     )
 
-   
+
   ;; Email with notmuch, mbsync, and my shell scripts
   (use-package notmuch
     :preface
@@ -767,15 +804,16 @@ you should place your code here."
     (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-fetch) ))
     (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-fetch) ))
 
+    ;; (require 'ob-ipython)
     ;; babelをアクティベイトする言語
-    ;; (org-babel-do-load-languages 'org-babel-load-languages 
-		;; 					                   '((emacs-lisp . t)
-		;; 					                     (C . t)
-		;; 						                   (shell . t)
-		;; 						                   (latex . t)
-		;; 						                   (org . t)
-		;; 						                   (python . t)
-    ;;                                (ipython . t)))
+    (org-babel-do-load-languages 'org-babel-load-languages 
+							                   '((emacs-lisp . t)
+							                     (C . t)
+								                   (shell . t)
+								                   (latex . t)
+								                   (org . t)
+								                   (python . t)
+                                   (ipython . t)))
 
     )
 
@@ -887,6 +925,21 @@ you should place your code here."
   (setq TeX-source-correlate-method 'synctex)
   (setq TeX-source-correlate-start-server t)
 
+  ;; w3m
+  (defun dotspacemacs/user-config ()
+    (setq w3m-home-page "https://www.google.com")
+    ;; W3M Home Page
+    (setq w3m-default-display-inline-images t)
+    (setq w3m-default-toggle-inline-images t)
+    ;; W3M default display images
+    (setq w3m-command-arguments '("-cookie" "-F"))
+    (setq w3m-use-cookies t)
+    ;; W3M use cookies
+    (setq browse-url-browser-function 'w3m-browse-url)
+    ;; Browse url function use w3m
+    (setq w3m-view-this-url-new-session-in-background t)
+    ;; W3M view url new session in background
+  )
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -901,7 +954,7 @@ you should place your code here."
     ("/Users/m-takeuchi/org/Getting Started with Orgzly.org" "/Users/m-takeuchi/org/appointments.org" "/Users/m-takeuchi/org/jobhant.org" "/Users/m-takeuchi/org/project.org" "/Users/m-takeuchi/org/project_hoby.org" "/Users/m-takeuchi/org/todo.org" "/Users/m-takeuchi/org/agenda/educo.org" "/Users/m-takeuchi/org/agenda/gcal.org" "/Users/m-takeuchi/org/agenda/gcal_private.org" "/Users/m-takeuchi/org/agenda/schedule.org")))
  '(package-selected-packages
    (quote
-    (ibuffer-projectile ghub let-alist emoji-cheat-sheet-plus company-emoji thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode insert-shebang fish-mode company-shell xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex helm-notmuch gnus-alias origami migemo org-gcal request-deferred deferred pdf-tools tablist ob-ipython dash-functional notmuch cp5022x org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ddskk cdb ccc unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (helm-w3m w3m csv-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic outline-magic ibuffer-projectile ghub let-alist emoji-cheat-sheet-plus company-emoji thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode insert-shebang fish-mode company-shell xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex helm-notmuch gnus-alias origami migemo org-gcal request-deferred deferred pdf-tools tablist ob-ipython dash-functional notmuch cp5022x org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ddskk cdb ccc unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
