@@ -34,6 +34,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
      csv
      python
      shell-scripts
@@ -67,9 +68,12 @@ values."
      (ibuffer :variables ibuffer-group-buffers-by 'modes) ;modes or projects or nil
      twitter
      w3m
-     ;; osx
-     ;; gnus
-     ;; spell-checking
+     (osx :variables
+          osx-dictionary-dictionary-choice "Japanese-Englsh"
+          ;; osx-use-dictionary-app nil
+          )
+     ;; javascrit
+     spell-checkings
      ;; syntax-checking
      ;; version-control
      )
@@ -332,7 +336,6 @@ values."
    dotspacemacs-whitespace-cleanup nil
    ))
 
-
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init', before layer configuration
@@ -340,6 +343,11 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  ;;このファイル末尾にcustom-set-variablesを羅列させない
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file))
+
   ;; For compiling pdf-tools
   (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
   (setenv "XAPIAN_CJK_NGRAM" "1")       ;For japanese search in notmuch
@@ -353,6 +361,24 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  ;; 日本語マニュアル
+  (add-to-list 'Info-directory-list "~/info/")
+  (defun Info-find-node--info-ja (orig-fn filename &rest args)
+    (apply orig-fn
+           (pcase filename
+             ("emacs" "emacs251-ja")
+             (t filename))
+           args))
+  (advice-add 'Info-find-node :around 'Info-find-node--info-ja)
+
+  ;; shellのpathを引き継ぐ
+  (with-eval-after-load 'exec-path-from-shell
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize))
+    (exec-path-from-shell-copy-env "PYTHONPATH")
+    (exec-path-from-shell-copy-env "PATH")
+    )
 
   ;; For reordering notmuch buffer
   (push "\\*notmuch-.+\\*" spacemacs-useful-buffers-regexp)
@@ -523,7 +549,7 @@ you should place your code here."
 	    (interactive "P")
 	    (let (
 		        (message-forward-as-mime nil) ; nil --> rfc822添付ではなくインライン化
-		        ;; (message-forward-ignored-headers ".*") ; 正規表現に一致するヘッダを無視
+		        (message-forward-ignored-headers ".*") ; 正規表現に一致するヘッダを無視
 		        (message-make-forward-subject-function 'message-forward-subject-fwd) ;記事の表題の前に Fwd: 
 		        )
 	      (notmuch-show-forward-message prefix)))
@@ -739,9 +765,8 @@ you should place your code here."
     (setq org-return-follows-link t)
     (setq org-capture-templates
 		      '(
-		        ;; ("a" "Appointment" entry (file  "~/org/agenda/schedule.org" )
-		        ;; "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
-   		      ;; ("a" "Appointment" entry (file  "~/org/agenda/schedule.org" )
+		        ("s" "Schedule" entry (file  "~/org/agenda/schedule.org" )
+		        "* %?\n  %^T\n:PROPERTIES:\n:END:\n")
    		      ("a" "Appointment" entry (file  "~/org/agenda/gcal.org" )
 		         "* %?\n  %^T\n\n")
 		        ("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
@@ -775,12 +800,12 @@ you should place your code here."
 		        ("CANCELED" . (:foreground "blue" :weight bold))
 		        ))
 
-    ;; ;; セレクションメニューから状態の変更を行えるようにする
+    ;; セレクションメニューから状態の変更を行えるようにする
     ;; (setq org-use-fast-todo-selection t)
-    ;; ;; default で logbook を表示
+    ;; default で logbook を表示(終ったToDoまでアジェンダカレンダーに表示する)
     ;; (setq org-agenda-include-inactive-timestamps t)
-    ;; ;; default で 時間を表示
-    ;; (setq org-agenda-start-with-log-mode t)
+    ;; default で 時間を表示
+    (setq org-agenda-start-with-log-mode t)
     ;; 0.5ヶ月分を表示
     (setq org-agenda-span 14)
     ;;アジェンダの clockreport 用パラメータ <-- spacemacsが綺麗にしてくれてるのでいらん?
@@ -804,7 +829,15 @@ you should place your code here."
     (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-fetch) ))
     (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-fetch) ))
 
-    ;; (require 'ob-ipython)
+    ;; コードを評価するとき尋ねない
+    (setq org-confirm-babel-evaluate nil)
+    ;; ソースコードを書き出すコマンドの設定とキーバインド
+    (defun org-babel-tangle-and-execute ()
+      (interactive)
+      (org-babel-tangle)
+      (org-babel-execute-buffer)
+      (org-display-inline-images))
+      ;; (define-key org-mode-map (kbd "C-c C-v m") 'org-babel-tangle-and-execute)
     ;; babelをアクティベイトする言語
     (org-babel-do-load-languages 'org-babel-load-languages 
 							                   '((emacs-lisp . t)
@@ -817,26 +850,26 @@ you should place your code here."
 
     )
 
-  ;; ipython in org-mode
-  (use-package ob-ipython
-    :preface
-    ;; ソースコードを書き出すコマンド
-    (defun org-babel-tangle-and-execute ()
-	    (interactive)
-	    (org-babel-tangle)
-	    (org-babel-execute-buffer)
-	    (org-display-inline-images))
-    :bind ( :map org-mode-map
-			           ("C-c C-v C-m" . org-babel-tangle-and-execute)
-		             )
-    :config
-    ;; For avoiding error message described in https://github.com/gregsexton/ob-ipython/issues/89
-    (setq ob-ipython-command "ipython3")
-    ;; コードを評価するとき尋ねない
-    (setq org-confirm-babel-evaluate nil)
-    ;; display/update images in the buffer after I evaluate
-    (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-    )
+  ;; Jupyter/IPython in org-mode
+  ;; (use-package ob-ipython
+  ;;   :preface
+  ;;   ;; ソースコードを書き出すコマンド
+  ;;   (defun org-babel-tangle-and-execute ()
+	;;     (interactive)
+	;;     (org-babel-tangle)
+	;;     (org-babel-execute-buffer)
+	;;     (org-display-inline-images))
+  ;;   :bind ( :map org-mode-map
+	;; 		           ("C-c C-v C-m" . org-babel-tangle-and-execute)
+	;; 	             )
+  ;;   :config
+  ;;   ;; For avoiding error message described in https://github.com/gregsexton/ob-ipython/issues/89
+  ;;   (setq ob-ipython-command "ipython3")
+  ;;   ;; コードを評価するとき尋ねない
+  ;;   (setq org-confirm-babel-evaluate nil)
+  ;;   ;; display/update images in the buffer after I evaluate
+  ;;   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  ;;   )
 
   ;; migemo
   (use-package migemo
@@ -940,25 +973,13 @@ you should place your code here."
     (setq w3m-view-this-url-new-session-in-background t)
     ;; W3M view url new session in background
   )
-)
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   (quote
-    ("/Users/m-takeuchi/org/Getting Started with Orgzly.org" "/Users/m-takeuchi/org/appointments.org" "/Users/m-takeuchi/org/jobhant.org" "/Users/m-takeuchi/org/project.org" "/Users/m-takeuchi/org/project_hoby.org" "/Users/m-takeuchi/org/todo.org" "/Users/m-takeuchi/org/agenda/educo.org" "/Users/m-takeuchi/org/agenda/gcal.org" "/Users/m-takeuchi/org/agenda/gcal_private.org" "/Users/m-takeuchi/org/agenda/schedule.org")))
- '(package-selected-packages
-   (quote
-    (helm-w3m w3m csv-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic outline-magic ibuffer-projectile ghub let-alist emoji-cheat-sheet-plus company-emoji thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode insert-shebang fish-mode company-shell xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help company-auctex auctex-latexmk auctex helm-notmuch gnus-alias origami migemo org-gcal request-deferred deferred pdf-tools tablist ob-ipython dash-functional notmuch cp5022x org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot ddskk cdb ccc unfill smeargle orgit mwim mmm-mode markdown-toc markdown-mode magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy evil-magit magit magit-popup git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
- '(paradox-github-token t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  ;; ;; Weblioで辞書検索
+  ;; (autoload 'dic-lookup-w3m "dic-lookup-w3m" "w3mで辞書を引く" t)
+  ;; (setq w3m-key-binding 'info)
+  ;; (global-set-key "\C-ch"
+  ;; ;; (bind-key "C-c h"
+  ;;   (lambda()
+  ;;   (interactive)
+  ;;   (dic-lookup-w3m "ej-weblio")))
+)
