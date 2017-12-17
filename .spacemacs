@@ -73,7 +73,7 @@ values."
           ;; osx-use-dictionary-app nil
           )
      ;; javascrit
-     spell-checkings
+     ;; spell-checkings
      ;; syntax-checking
      ;; version-control
      )
@@ -899,21 +899,21 @@ you should place your code here."
                                      "/Library/TeX/texbin/lualatex %t"
                                      TeX-run-TeX nil (latex-mode) :help
                                      "Run Lualatex"))
-       (add-to-list 'TeX-command-list '("Latexmk-upLaTeX-pdfdvi"
-                                     "/Library/TeX/texbin/latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
-                                     TeX-run-TeX nil (latex-mode) :help "Run Latexmk-upLaTeX-pdfdvi"))
+       ;; (add-to-list 'TeX-command-list '("Latexmk-upLaTeX-pdfdvi"
+       ;;                               "/Library/TeX/texbin/latexmk -e '$latex=q/uplatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -e '$dvipdf=q/dvipdfmx %%O -o %%D %%S/' -norc -gg -pdfdvi %t"
+       ;;                               TeX-run-TeX nil (latex-mode) :help "Run Latexmk-upLaTeX-pdfdvi"))
        (add-to-list 'TeX-command-list '("Latexmk-pdfLaTeX"
                                      "/Library/TeX/texbin/latexmk -e '$pdflatex=q/pdflatex %%O %S %(mode) %%S/' -e '$bibtex=q/bibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/makeindex %%O -o %%D %%S/' -norc -gg -pdf %t"
                                      TeX-run-TeX nil (latex-mode) :help "Run Latexmk-pdfLaTeX"))
        (add-to-list 'TeX-command-list '("Latexmk-LuaLaTeX"
                                      "/Library/TeX/texbin/latexmk -e '$pdflatex=q/lualatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -norc -gg -pdf %t"
                                      TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaLaTeX"))
-       (add-to-list 'TeX-command-list '("Latexmk-LuaJITLaTeX"
-                                     "/Library/TeX/texbin/latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -norc -gg -pdf %t"
-                                     TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
-       (add-to-list 'TeX-command-list '("Latexmk-XeLaTeX"
-                                     "/Library/TeX/texbin/latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -norc -gg -pdf %t"
-                                     TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
+       ;; (add-to-list 'TeX-command-list '("Latexmk-LuaJITLaTeX"
+       ;;                               "/Library/TeX/texbin/latexmk -e '$pdflatex=q/luajitlatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -norc -gg -pdf %t"
+       ;;                               TeX-run-TeX nil (latex-mode) :help "Run Latexmk-LuaJITLaTeX"))
+       ;; (add-to-list 'TeX-command-list '("Latexmk-XeLaTeX"
+       ;;                               "/Library/TeX/texbin/latexmk -e '$pdflatex=q/xelatex %%O %S %(mode) %%S/' -e '$bibtex=q/upbibtex %%O %%B/' -e '$biber=q/biber %%O --bblencoding=utf8 -u -U --output_safechars %%B/' -e '$makeindex=q/upmendex %%O -o %%D %%S/' -norc -gg -pdf %t"
+       ;;                               TeX-run-TeX nil (latex-mode) :help "Run Latexmk-XeLaTeX"))
        (add-to-list 'TeX-command-list '("displayline"
                                      "/Applications/Skim.app/Contents/SharedSupport/displayline %n %s.pdf \"%b\""
                                      TeX-run-discard-or-function t t :help "Forward search with Skim"))
@@ -929,6 +929,18 @@ you should place your code here."
        ))
   )
 
+  ;; Pdf prevew with pdf-tools
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+         TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+         TeX-source-correlate-start-server t)
+  ;; refresh buffer
+  (add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
+  ;; (setq preview-image-type 'dvipng)
+  (setq TeX-source-correlate-method 'synctex)
+  (setq TeX-source-correlate-start-server t)
+
+
   (with-eval-after-load 'tex-jp
     (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
                                      "/Library/TeX/texbin/ptex2pdf -u -e -ot '%S %(mode)'"
@@ -938,9 +950,7 @@ you should place your code here."
     ;(setq japanese-TeX-engine-default 'luatex)
     ;(setq japanese-TeX-engine-default 'xetex)
     ;; pdfview and auctex
-    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-          TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-          TeX-source-correlate-start-server t)
+    
     ;; (setq TeX-view-program-selection '((output-dvi "displayline")
     ;;                                    (output-pdf "displayline")))
     ;; (setq TeX-view-program-selection '((output-dvi "Skim")
@@ -949,14 +959,6 @@ you should place your code here."
     ;; (setq japanese-LaTeX-default-style "ltjsarticle")
     (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
     (delq (assoc command TeX-command-list) TeX-command-list)) )
-
-  ;; refresh buffer
-  (add-hook 'TeX-after-compilation-finished-functions
-          #'TeX-revert-document-buffer)
-
-  ;; (setq preview-image-type 'dvipng)
-  (setq TeX-source-correlate-method 'synctex)
-  (setq TeX-source-correlate-start-server t)
 
   ;; w3m
   (defun dotspacemacs/user-config ()
