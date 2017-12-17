@@ -1,0 +1,61 @@
+# key: latextemp
+# name: latextemplate-lualatex
+# --
+\documentclass{ltjarticle}
+\usepackage{luatexja}
+\usepackage{array}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{txfonts}
+\usepackage{bm}
+\usepackage{graphicx}
+% \usepackage[top=30mm,bottom=35mm,left=18mm,right=15mm]{geometry}
+\usepackage{ulem}
+
+\usepackage[longnamesfirst]{natbib}
+\usepackage{cite}
+%\usepackage{amssymb}
+
+\pagestyle{fancy}
+
+%フォーマットサイズ
+\pagestyle{plain}
+\setlength{\textwidth}{6.25in}
+\setlength{\oddsidemargin}{0.1cm}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textheight}{9.0in}
+% \setlength{\textwidth}{380pt}
+% \setlength{\marginparwidth}{120pt}
+
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\tablename}{Table.}
+
+\setcounter{topnumber}{5} %%ページ上部の図表制限 5個までOK
+\setcounter{bottomnumber}{5} %%ページ上部の図表制限 5個までOK
+\setcounter{totalnumber}{10} %%ページ上部の図表制限 10個までOK
+% \setlength{\mathindent}{2\zw} %%数式のはじまる位置を指定する
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%\bibliographystyle{plainnat}
+\bibliographystyle{junsrt}
+
+\begin{document}
+
+
+\begin{center}
+ \LARGE  ${1:Title}\\
+\end{center}
+
+\begin{flushright}
+${2:Date}\\
+${3:Author Name}
+\end{flushright}
+
+$0
+
+\end{document}
+%↑ドキュメントの終了
