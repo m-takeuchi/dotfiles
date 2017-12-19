@@ -1,0 +1,19 @@
+# key: JupyPLOT
+# name: jupyter-plt-plot
+# --
+### Figure plotting
+fig, ax = plt.subplots()
+# ax.set_yscale('log')
+# ax.set_xlim(0,100)
+# ax.set_ylim(0,200)
+
+colors = plt.cm.spectral(np.linspace(0,1,16))
+ax.set_prop_cycle('color', colors)
+ax.set_xlabel('{$1:X label} ({$2:unit})')
+ax.set_ylabel('{$3:Y label} ({$4:unit})')
+
+### 測定データのプロット
+ax.plot({$5:x}, {$6:y}, label={$7:'label'})
+plt.legend(fontsize=10)
+plt.show()
+$0

@@ -1,0 +1,28 @@
+# key: JupyMPLRC
+# name: jupyter-mpl-rc
+# --
+# フォントやフォントサイズ, 図の全体の体裁等を設定
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+import matplotlib as mpl
+
+font='Times New Roman'
+# font='IPAexGothic' # IPA日本語フォントをインストールしていれば使える
+fontsize=24
+
+mpl.rc('font', family=font, size=fontsize) # フォントとフォントサイズを指定
+mpl.rc('figure', figsize='10,8') # グラフサイズを指定(インチ)
+mpl.rc('axes', linewidth=2.0)   # 線幅を指定
+mpl.rc('xtick', direction='in') #x軸の目盛線が内向き('in')か外向き('out')か双方向か('inout')
+mpl.rc('ytick', direction='in') #y軸の目盛線が内向き('in')か外向き('out')か双方向か('inout'))
+mpl.rc('xtick.major', size=8, width=2.0) # x軸の主軸刻みの大きさ・線幅を指定
+mpl.rc('xtick.minor', size=4, width=2.0) # x軸の副軸刻みの大きさ・線幅を指定
+mpl.rc('ytick.major', size=8, width=2.0) # y軸の主軸刻みの大きさ・線幅を指定
+mpl.rc('ytick.minor', size=4, width=2.0) # y軸の副軸刻みの大きさ・線幅を指定
+mpl.rc('figure.subplot', hspace=0.3)     # グラフの余白を比率で指定
+mpl.rc('legend', numpoints = 1)          # 凡例のマーカーはそれぞれ1個に設定
+mpl.rc('mathtext', fontset='cm')         # 数式モードのフォント設定. cm は Computer Morden
+$0

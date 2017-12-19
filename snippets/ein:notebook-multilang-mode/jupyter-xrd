@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: jupyter-xrd
+# key: JupyXRD
+# --
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+#materials projectのREST APIを用いるためのmodule
+# from pymatgen.matproj.rest import MPRester
+import pymatgen as mg
+from pymatgen import MPRester, Composition, Lattice, Structure
+import re,sys
+import pprint
+
+#自分のAPI keyを記載したテキストファイルmyapi.txtを同ディレクトリに準備しておくこと
+with open('myapi.txt', 'r') as f:
+    l = f.readline()
+    apikey = l.split('\n')[0]
+mpr = MPRester(apikey) #自分のAPIkeyを指定
+$0

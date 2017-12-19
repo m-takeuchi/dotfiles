@@ -72,6 +72,7 @@ values."
           osx-dictionary-dictionary-choice "Japanese-Englsh"
           ;; osx-use-dictionary-app nil
           )
+     ipython-notebook
      ;; javascrit
      ;; spell-checkings
      ;; syntax-checking
@@ -400,7 +401,10 @@ you should place your code here."
   ;;; mostly equivalent (see below about fallbacks) but shorter:
   ;; (setq auth-sources '((:source "~/dotfiles_secret/google_dev.gpg")))
   ;;; even shorter and the _default_:
-  (setq auth-sources '("~/dotfiles_secret/google_dev.gpg" "~/dotfiles_secret/email_keys.gpg"))
+  (setq auth-sources '("~/dotfiles_secret/google_dev.gpg"
+                       "~/dotfiles_secret/email_keys.gpg"
+                       "~/dotfiles_secret/kuins_ssh_pass.gpg"))
+  
   ;; EasyPGを利用したmy関数 googleカレンダーにアクセスする用
   (require 'cl)
   (defun* my:auth-source-get-passwd (&rest spec &allow-other-keys)
