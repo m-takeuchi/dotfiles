@@ -20,6 +20,7 @@ UseNamespace yes
 MaildirStore m2gmail-local
 Path ~/Maildir/m2gmail/
 Inbox ~/Maildir/m2gmail/INBOX
+# SubFolders Legacy
 
 ### Channelの設定 for gmail 
 Channel m2gmail-inbox
@@ -131,7 +132,7 @@ UseNamespace yes
 MaildirStore kumail-local
 Path ~/Maildir/kumail/
 Inbox ~/Maildir/kumail/INBOX
-
+SubFolders Legacy
 
 Channel kumail-inbox
 Master :kumail-remote:
@@ -225,6 +226,8 @@ Channel kumail-inbox
 Channel kumail-draft
 Channel kumail-sent
 Channel kumail-archive
+Channel kumail-trash
+
 
 # Channel m2gmail-junk
 # Master ":m2gmail-remote:[Gmail]/&j,dg0TDhMPww6w-"
