@@ -344,9 +344,6 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  ;; 自宅のiMacで使用している場合はcommandキーをmetaキーとして設定する
-  (when (system-name) "Mitsuaki-no-iMac.local"
-    (setq ns-command-modifier (quote meta)))
   
   ;;このファイル末尾にcustom-set-variablesを羅列させない
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -384,6 +381,10 @@ you should place your code here."
     (exec-path-from-shell-copy-env "PYTHONPATH")
     (exec-path-from-shell-copy-env "PATH")
     )
+
+  ;; 自宅のiMacで使用している場合はcommandキーをmetaキーとして設定する
+  (when (system-name) "Mitsuaki-no-iMac.local"
+        (setq ns-command-modifier (quote meta)))
 
   ;; For reordering notmuch buffer
   (push "\\*notmuch-.+\\*" spacemacs-useful-buffers-regexp)
