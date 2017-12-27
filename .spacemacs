@@ -34,6 +34,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     lua
+     javascript
      html
      csv
      python
@@ -177,10 +179,12 @@ values."
    dotspacemacs-default-font '(
                                ;; "Source Code Pro"
                                "Menlo"
-                               :size 13
+                               :size 14
+                               ;; "Ricty for Powerline"
+                               ;; :size 14
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -374,6 +378,13 @@ you should place your code here."
            args))
   (advice-add 'Info-find-node :around 'Info-find-node--info-ja)
 
+  ;; 日本語フォントの設定
+  (set-fontset-font (frame-parameter nil 'font)
+                    'japanese-jisx0208
+                    (font-spec :family "Hiragino Kaku Gothic ProN"))
+  (add-to-list 'face-font-rescale-alist
+               '(".*Hiragino Kaku Gothic ProN.*" . 1.2))
+
   ;; shellのpathを引き継ぐ
   (with-eval-after-load 'exec-path-from-shell
     (when (memq window-system '(mac ns x))
@@ -440,7 +451,7 @@ you should place your code here."
 
   ;; 日本語入力ddskk
   (with-eval-after-load 'skk
-    (bind-key "C-j"  'skk-kakutei-key) ;; iterm2 では'C-;'をSend Hex Codeとして '0x18 0x40 0x63 0x3b'と値を入力すればターミナル上でも'C-;'が効く
+    ;; (bind-key "C-j"  'skk-kakutei-key) ;; iterm2 では'C-;'をSend Hex Codeとして '0x18 0x40 0x63 0x3b'と値を入力すればターミナル上でも'C-;'が効く
     (unbind-key "$" skk-j-mode-map)		;かなモードで$入力時に漢字コードを表示するのを無効化する
     (setq mac-pass-control-to-system nil)
     ;; skkserv
