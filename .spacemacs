@@ -179,7 +179,7 @@ values."
    dotspacemacs-default-font '(
                                ;; "Source Code Pro"
                                "Menlo"
-                               :size 14
+                               :size 13
                                ;; "Ricty for Powerline"
                                ;; :size 14
                                :weight normal
@@ -348,7 +348,13 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  
+
+  ;; 野良elispのpathをload-pathに追加
+  (let ((default-directory (expand-file-name "~/dotfiles/private_elisp")))
+    (add-to-list 'load-path default-directory)
+    (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+        (normal-top-level-add-subdirs-to-load-path)))
+
   ;;このファイル末尾にcustom-set-variablesを羅列させない
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
@@ -427,6 +433,14 @@ you should place your code here."
     (let ((founds (apply 'auth-source-search spec)))
       (when founds
         (funcall (plist-get (nth 0 founds) :secret)))))
+
+  ;; hatena-blog
+  (require 'hatena-blog-mode)
+  (setq hatena-id "xxx")
+  (setq hatena-blog-api-key  "xxx")
+  (setq hatena-blog-id "tawake28.hatenablog.com")
+  (setq hatena-blog-editing-mode "md")     ;; set md or html(default as md)
+  (setq hatena-blog-backup-dir "~/Dropbox/hatena_blog_backup") ;; set if you want to backup your post.
 
   ;; コード折り畳みorigamiのカスタマイズ http://emacs.rubikitch.com/origami/
   (with-eval-after-load 'origami
@@ -791,7 +805,7 @@ you should place your code here."
 		         "* %?\n  %^T\n\n")
 		        ("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
 		         "* TODO %?\nEntered on %U\n%a")
-		        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+		        ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 		         "* %?\nEntered on %U\n%i\n%a")
 		        ("J" "Jobhant" entry (file+headline "~/org/jobhant.org" "Jobhant")
 		         "* %?\nEntered on %U\n%a\n")
