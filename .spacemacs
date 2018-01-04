@@ -102,6 +102,7 @@ values."
    dotspacemacs-excluded-packages
    '(
      org-projectile
+     wolfram-mode
      )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -179,7 +180,7 @@ values."
    dotspacemacs-default-font '(
                                ;; "Source Code Pro"
                                "Menlo"
-                               :size 13
+                               :size 14
                                ;; "Ricty for Powerline"
                                ;; :size 14
                                :weight normal
@@ -425,9 +426,10 @@ you should place your code here."
   ;;; even shorter and the _default_:
   (setq auth-sources '("~/dotfiles_secret/google_dev.gpg"
                        "~/dotfiles_secret/email_keys.gpg"
-                       "~/dotfiles_secret/kuins_ssh_pass.gpg"))
+                       "~/dotfiles_secret/kuins_ssh_pass.gpg"
+                       "~/dotfiles_secret/hatena_blog_keys.gpg"))
   
-  ;; EasyPGを利用したmy関数 googleカレンダーにアクセスする用
+  ;; netrc形式のパスワード を取り込む用. EasyPGを利用可
   (require 'cl)
   (defun* my:auth-source-get-passwd (&rest spec &allow-other-keys)
     (let ((founds (apply 'auth-source-search spec)))
@@ -436,9 +438,9 @@ you should place your code here."
 
   ;; hatena-blog
   (require 'hatena-blog-mode)
-  (setq hatena-id "xxx")
-  (setq hatena-blog-api-key  "xxx")
-  (setq hatena-blog-id "tawake28.hatenablog.com")
+  (setq hatena-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :user))
+  (setq hatena-blog-api-key (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :api-key))
+  (setq hatena-blog-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :blog-id))
   (setq hatena-blog-editing-mode "md")     ;; set md or html(default as md)
   (setq hatena-blog-backup-dir "~/Dropbox/hatena_blog_backup") ;; set if you want to backup your post.
 
