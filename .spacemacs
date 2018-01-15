@@ -729,6 +729,8 @@ you should place your code here."
 \\usepackage{textpos}               %紙面絶対位置でテキストボックスを入れる
 \\usepackage[pdftex,pdfencoding=auto]{hyperref}
 \\usepackage{svg}
+\\usepackage{graphicx}
+\\usepackage{grffile}   %Changes the algTorithm to check for known extensions
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
 [EXTRA]"
