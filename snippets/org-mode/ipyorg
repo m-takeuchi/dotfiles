@@ -17,6 +17,8 @@ fig.patch.set_facecolor('white')
 fig.patch.set_alpha(0.0)
 ax.patch.set_facecolor('white')
 ax.patch.set_alpha(1.0)
+# tick
+ax.tick_params(direction='in')
 
 $0
 #+END_SRC

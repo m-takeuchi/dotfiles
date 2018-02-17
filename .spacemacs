@@ -35,7 +35,7 @@ values."
    dotspacemacs-configuration-layers
    '(
      lua
-     javascript
+     ;; javascript
      html
      csv
      python
