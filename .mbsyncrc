@@ -1,3 +1,4 @@
+### Account for m2takeuchi@gmail.com
 IMAPAccount m2gmail
 Host imap.gmail.com
 User m2takeuchi@gmail.com
@@ -11,8 +12,33 @@ CertificateFile /usr/local/etc/openssl/cert.pem
 AuthMechs LOGIN
 # CertificateFile /etc/ssl/certs/ca-certificates.crt
 
+### Account for tawake28@icloud.com
+IMAPAccount icloud
+Host imap.mail.me.com
+User tawake28
+PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | /usr/bin/sed -n 's,^machine .*password \\\([^ ]*\\) port.*icloud,\\1,p')}"
+Port 993
+SSLType IMAPS
+CertificateFile /usr/local/etc/openssl/cert.pem
+AuthMechs LOGIN
 
-### Storeの設定 for gmail 
+
+##### kumail at kyoto univ.
+# IMAPAccount kumail
+# Host mail.iimc.kyoto-u.ac.jp
+# User mitsuaki274takeuchi
+# PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | /usr/bin/sed -n 's,^machine .*password \\\([^ ]*\\) port.*kumail,\\1,p')}"
+# Port 993
+# # UseIMAPS yes
+# # RequireSSL yes
+# # UseTLSv1.2 yes
+# SSLType IMAPS
+# CertificateFile /usr/local/etc/openssl/cert.pem
+# # AuthMechs LOGIN
+
+
+
+### Storeの設定 for gmail
 IMAPStore m2gmail-remote
 Account m2gmail
 UseNamespace yes
@@ -21,6 +47,33 @@ MaildirStore m2gmail-local
 Path ~/Maildir/m2gmail/
 Inbox ~/Maildir/m2gmail/INBOX
 # SubFolders Legacy
+
+### Storeの設定 for icloud
+IMAPStore icloud-remote
+Account icloud
+UseNamespace yes
+
+MaildirStore icloud-local
+Path ~/Maildir/icloud/
+Inbox ~/Maildir/icloud/INBOX
+# SubFolders Legacy
+
+# ### Storeの設定 for kumail
+# IMAPStore kumail-remote
+# Account kumail
+# UseNamespace yes
+
+# MaildirStore kumail-local
+# Path ~/Maildir/kumail/
+# Inbox ~/Maildir/kumail/INBOX
+# SubFolders Legacy
+
+
+#
+# Channels and Groups 
+# (so that we can rename local directories and flatten the hierarchy)
+#
+#
 
 ### Channelの設定 for gmail 
 Channel m2gmail-inbox
@@ -98,7 +151,7 @@ Expunge Slave
 Sync Pull
 SyncState *
 
-
+### Group for m2takeuchi@gmail
 Group m2gmail
 Channel m2gmail-inbox
 Channel m2gmail-sent
@@ -109,124 +162,115 @@ Channel m2gmail-archive
 Channel m2gmail-trash
 # Channel m2gmail-spam
 
-
-##### kumail at kyoto univ.
-IMAPAccount kumail
-Host mail.iimc.kyoto-u.ac.jp
-User mitsuaki274takeuchi
-PassCmd "echo ${PASSWORD:-$(/usr/local/bin/gpg --no-tty -qd ~/dotfiles_secret/email_keys.gpg | /usr/bin/sed -n 's,^machine .*password \\\([^ ]*\\) port.*kumail,\\1,p')}"
-Port 993
-# UseIMAPS yes
-# RequireSSL yes
-# UseTLSv1.2 yes
-SSLType IMAPS
-CertificateFile /usr/local/etc/openssl/cert.pem
-# AuthMechs LOGIN
-
-### Storeの設定 for kumail
-IMAPStore kumail-remote
-Account kumail
-UseNamespace yes
-
-
-MaildirStore kumail-local
-Path ~/Maildir/kumail/
-Inbox ~/Maildir/kumail/INBOX
-SubFolders Legacy
-
-Channel kumail-inbox
-Master :kumail-remote:
-Slave :kumail-local:
-Patterns INBOX
-# Create Slave
-# Expunge Slave
-# Sync Pull
-## 双方向に同期する設定 ここから
+### Channel for icloud
+Channel icloud-folders
+Master :icloud-remote:
+Slave :icloud-local:
+Patterns "INBOX" "Saved" "Drafts" "Archive" "Sent*" "Trash"
 Create Both
 Expunge Both
-Sync all
-## ここまで
 SyncState *
 
-Channel kumail-draft
-Master :kumail-remote:
-Slave :kumail-local:
-Patterns draft
-# Create Slave
-# Expunge Slave
-# Sync Pull
-## 双方向に同期する設定 ここから
-Create Both
-Expunge Both
-Sync all
-## ここまで
-SyncState *
+### Group for icloud
+Group icloud
+Channel icloud-folders
 
-Channel kumail-sent
-Master :kumail-remote:sent
-Slave :kumail-local:Sent
-# Patterns sent
-# Create Slave
-# Expunge Slave
-# Sync Pull
-## 双方向に同期する設定 ここから
-Create Both
-Expunge Both
-Sync all
-## ここまで
-SyncState *
 
-Channel kumail-archive
-Master :kumail-remote:Archive
-Slave :kumail-local:Archive
-# Patterns archive
-# Create Slave
-# Remove Slave
-# Expunge Slave
-# Sync Pull
-# Create Master
-# Expunge Master
-Create Both
-Expunge Both
-Sync All
-# Sync Push
-SyncState *
 
-Channel kumail-trash
-Master :kumail-remote:
-Slave :kumail-local:
-Patterns trash
-Create Slave
-Expunge Slave
-Sync Pull
-## 双方向に同期する設定 ここから
+# ### Channel for kumail
+# Channel kumail-inbox
+# Master :kumail-remote:
+# Slave :kumail-local:
+# Patterns INBOX
+# # Create Slave
+# # Expunge Slave
+# # Sync Pull
+# ## 双方向に同期する設定 ここから
 # Create Both
 # Expunge Both
 # Sync all
-## ここまで
-SyncState *
+# ## ここまで
+# SyncState *
 
-Channel kumail-spam
-Master :kumail-remote:
-Slave :kumail-local:
-Patterns SPAM
-Create Slave
-Expunge Slave
-Sync Pull
-## 双方向に同期する設定 ここから
+# Channel kumail-draft
+# Master :kumail-remote:
+# Slave :kumail-local:
+# Patterns draft
+# # Create Slave
+# # Expunge Slave
+# # Sync Pull
+# ## 双方向に同期する設定 ここから
 # Create Both
 # Expunge Both
 # Sync all
-## ここまで
-SyncState *
+# ## ここまで
+# SyncState *
+
+# Channel kumail-sent
+# Master :kumail-remote:sent
+# Slave :kumail-local:Sent
+# # Patterns sent
+# # Create Slave
+# # Expunge Slave
+# # Sync Pull
+# ## 双方向に同期する設定 ここから
+# Create Both
+# Expunge Both
+# Sync all
+# ## ここまで
+# SyncState *
+
+# Channel kumail-archive
+# Master :kumail-remote:Archive
+# Slave :kumail-local:Archive
+# # Patterns archive
+# # Create Slave
+# # Remove Slave
+# # Expunge Slave
+# # Sync Pull
+# # Create Master
+# # Expunge Master
+# Create Both
+# Expunge Both
+# Sync All
+# # Sync Push
+# SyncState *
+
+# Channel kumail-trash
+# Master :kumail-remote:
+# Slave :kumail-local:
+# Patterns trash
+# Create Slave
+# Expunge Slave
+# Sync Pull
+# ## 双方向に同期する設定 ここから
+# # Create Both
+# # Expunge Both
+# # Sync all
+# ## ここまで
+# SyncState *
+
+# Channel kumail-spam
+# Master :kumail-remote:
+# Slave :kumail-local:
+# Patterns SPAM
+# Create Slave
+# Expunge Slave
+# Sync Pull
+# ## 双方向に同期する設定 ここから
+# # Create Both
+# # Expunge Both
+# # Sync all
+# ## ここまで
+# SyncState *
 
 
-Group kumail
-Channel kumail-inbox
-Channel kumail-draft
-Channel kumail-sent
-Channel kumail-archive
-Channel kumail-trash
+# Group kumail
+# Channel kumail-inbox
+# Channel kumail-draft
+# Channel kumail-sent
+# Channel kumail-archive
+# Channel kumail-trash
 
 
 # Channel m2gmail-junk

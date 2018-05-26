@@ -34,6 +34,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     javascript
      lua
      ;; javascript
      html
@@ -64,12 +65,13 @@ values."
      (latex :variables
             latex-build-command "LatexMk"
             latex-enable-folding t)
+     bibtex
      pdf-tools
      extra-langs
      emoji ;; :+1:
      (ibuffer :variables ibuffer-group-buffers-by 'modes) ;modes or projects or nil
      twitter
-     w3m
+     ;; w3m
      (osx :variables
           osx-dictionary-dictionary-choice "Japanese-Englsh"
           ;; osx-use-dictionary-app nil
@@ -376,21 +378,22 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
   ;; 日本語マニュアル
-  (add-to-list 'Info-directory-list "~/info/")
-  (defun Info-find-node--info-ja (orig-fn filename &rest args)
-    (apply orig-fn
-           (pcase filename
-             ("emacs" "emacs251-ja")
-             (t filename))
-           args))
-  (advice-add 'Info-find-node :around 'Info-find-node--info-ja)
+  ;; (add-to-list 'Info-directory-list "~/info/")
+  ;; (defun Info-find-node--info-ja (orig-fn filename &rest args)
+  ;;   (apply orig-fn
+  ;;          (pcase filename
+  ;;            ("emacs" "emacs251-ja")
+  ;;            (t filename))
+  ;;          args))
+  ;; (advice-add 'Info-find-node :around 'Info-find-node--info-ja)
 
   ;; 日本語フォントの設定
-  (set-fontset-font (frame-parameter nil 'font)
+  (when (memq window-system '(mac ns x))
+    (set-fontset-font (frame-parameter nil 'font)
                     'japanese-jisx0208
                     (font-spec :family "Hiragino Kaku Gothic ProN"))
-  (add-to-list 'face-font-rescale-alist
-               '(".*Hiragino Kaku Gothic ProN.*" . 1.2))
+    (add-to-list 'face-font-rescale-alist
+               '(".*Hiragino Kaku Gothic ProN.*" . 1.2)))
 
   ;; shellのpathを引き継ぐ
   (with-eval-after-load 'exec-path-from-shell
@@ -402,6 +405,9 @@ you should place your code here."
 
   ;; 自宅のiMacで使用している場合はcommandキーをmetaキーとして設定する
   (when (system-name) "Mitsuaki-no-iMac.local"
+        (setq ns-command-modifier (quote meta)))
+  ;; 自宅のMacBookAirで使用している場合はcommandキーをmetaキーとして設定する
+  (when (system-name) "mba.local"
         (setq ns-command-modifier (quote meta)))
 
   ;; For reordering notmuch buffer
@@ -418,6 +424,7 @@ you should place your code here."
     (bind-key "C-x C-f"  'helm-find-files)
     (bind-key "M-y"      'helm-show-kill-ring)
     (bind-key "M-r"      'helm-resume)
+    (bind-key "C-x p"      'helm-bibtex)     ;; helm-bibtex
     ;; (bind-key "C-\\"      'spacemacs/fold-transient-state/origami-toggle-all-nodes)
     )
 
@@ -436,13 +443,13 @@ you should place your code here."
       (when founds
         (funcall (plist-get (nth 0 founds) :secret)))))
 
-  ;; hatena-blog
-  (require 'hatena-blog-mode)
-  (setq hatena-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :user))
-  (setq hatena-blog-api-key (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :api-key))
-  (setq hatena-blog-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :blog-id))
-  (setq hatena-blog-editing-mode "md")     ;; set md or html(default as md)
-  (setq hatena-blog-backup-dir "~/Dropbox/hatena_blog_backup") ;; set if you want to backup your post.
+  ;; ;; hatena-blog
+  ;; (require 'hatena-blog-mode)
+  ;; (setq hatena-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :user))
+  ;; (setq hatena-blog-api-key (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :api-key))
+  ;; (setq hatena-blog-id (plist-get (nth 0 (auth-source-search :port "hatena.ne.jp")) :blog-id))
+  ;; (setq hatena-blog-editing-mode "md")     ;; set md or html(default as md)
+  ;; (setq hatena-blog-backup-dir "~/Dropbox/hatena_blog_backup") ;; set if you want to backup your post.
 
   ;; コード折り畳みorigamiのカスタマイズ http://emacs.rubikitch.com/origami/
   (with-eval-after-load 'origami
@@ -545,10 +552,10 @@ you should place your code here."
     ;; (setq message-sendmail-f-is-evil nil)
     (setq message-sendmail-f-is-evil t)
     (setq mail-interactive t)
-    ;; (setq user-full-name "Mitsuaki Takeuchi")
-    ;; (setq user-mail-address "m-takeuchi@kuee.kyoto-u.ac.jp")
     (setq message-kill-buffer-on-exit t)
     (setq mail-user-agent 'message-user-agent)
+    ;; (setq user-full-name "Mitsuaki Takeuchi")
+    ;; (setq user-mail-address "m-takeuchi@kuee.kyoto-u.ac.jp")
 
     ;; アカウントによる署名などの切り替え
     (require 'gnus-alias)
@@ -563,18 +570,39 @@ you should place your code here."
 		         nil ;; No extra headers
 		         nil ;; No extra body text
 		         "~/.signature_m2takeuchi")
-		        ("kumail_ja"
-		         nil
-		         "Mitsuaki Takeuchi <m-takeuchi@kuee.kyoto-u.ac.jp>"
+            ("icloud"
+		         nil ;; Does not refer to any other identity
+		         "Mitsuaki Takeuchi <tawake28@icloud.com>" ;; Sender address
 		         nil ;; No organization header
 		         nil ;; No extra headers
-		         nil ;; No extra body text ;; (("Bcc" . "john.doe@example.com"))
-		         "~/.signature_kumail_ja")))
+		         nil ;; No extra body text
+		         "~/.signature_icloud")
+		        ;; ("kumail_ja"
+		        ;;  nil
+		        ;;  "Mitsuaki Takeuchi <m-takeuchi@kuee.kyoto-u.ac.jp>"
+            ;;  ;; "Mitsuaki Takeuchi <takeuchi.mitsuaki.6w@kyoto-u.ac.jp>"
+		        ;;  nil ;; No organization header
+		        ;;  nil ;; No extra headers
+		        ;;  nil ;; No extra body text ;; (("Bcc" . "john.doe@example.com"))
+		        ;;  "~/.signature_kumail_ja")
+            ;; ("kyoto-u_lifelong"
+		        ;;  nil
+		        ;;  "Mitsuaki Takeuchi <takeuchi.mitsuaki.6w@kyoto-u.jp>"
+		        ;;  nil ;; No organization header
+		        ;;  nil ;; No extra headers
+		        ;;  nil ;; No extra body text ;; (("Bcc" . "john.doe@example.com"))
+		        ;;  "~/.signature_kyoto-u_lifelong")
+            ))
     ;; Use "m2takeuchi" identity by default
     (setq gnus-alias-default-identity "m2takeuchi")
     ;; Define rules to match kumail_ja identity
     (setq gnus-alias-identity-rules
-          '(("kumail_ja" ("from" "\\(m-takeuchi@kuee\\.kyoto-u\\.ac\\.jp\\|takeuchi.mitsuaki.6w@kyoto-u\\.ac\\.jp\\)" both) "kumail_ja")))
+          '(;; ("kumail_ja"
+            ;;  ("from" "\\(m-takeuchi@kuee\\.kyoto-u\\.ac\\.jp\\|takeuchi.mitsuaki.6w@kyoto-u\\.ac\\.jp\\)" both) "kumail_ja")
+            ("kyoto-u_lifelong"
+             ;; ("any" "<\\(.+\\)\\@kyoto-u\\.jp" both) "kyoto-u_lifelong")
+             ("any" "\\(takeuchi\\.mitsuaki\\.6w@kyoto-u\\.jp\\)" both) "kyoto-u_lifelong")
+            ))
     ;; Determine identity when message-mode loads
     (add-hook 'message-setup-hook 'gnus-alias-determine-identity)
     ;; 返信の引用フォーマット
@@ -659,8 +687,9 @@ you should place your code here."
 		;; (setq notmuch-crypto-process-mime t)
     (setq notmuch-always-prompt-for-sender t)
     ;; (setq notmuch-show-part-button-default-action: 'notmuch-show-view-part)
-    (setq notmuch-fcc-dirs '(("m-takeuchi@kuee.kyoto-u.ac.jp" . "kumail/Sent")
-						                 ("takeuchi.mitsuaki.6w@kyoto-u.ac.jp" . "kumail/Sent")
+    (setq notmuch-fcc-dirs '(
+                             ;; ("m-takeuchi@kuee.kyoto-u.ac.jp" . "kumail/Sent")
+						                 ;; ("takeuchi.mitsuaki.6w@kyoto-u.ac.jp" . "kumail/Sent")
 						                 ("m2takeuchi@gmail.com" . "m2gmail/Sent")))
     (setq notmuch-mua-compose-in 'current-window)
     (setq notmuch-show-indent-messages-width 2)
@@ -671,6 +700,8 @@ you should place your code here."
  		        (:name "m2gmail-NotDODA" :query "tag:m2gmail and not (from:doda.jp or from:persol.co.jp)" :key "j")
 		        (:name "m2gmail" :query "tag:m2gmail" :key "g")
 		        (:name "m2gmail-inbox" :query "tag:m2gmail and tag:inbox" :key "G")
+            (:name "icloud" :query "tag:icloud" :key "c")
+		        (:name "icloud-inbox" :query "tag:icloud and tag:inbox" :key "C")
 		        (:name "unread" :query "tag:unread" :key "u")
 		        (:name "flagged" :query "tag:flagged" :key "f")
   		      (:name "flagged-work" :query "tag:flagged and tag:kumail" :key "F")
@@ -767,6 +798,19 @@ you should place your code here."
  [PACKAGES]
  [EXTRA]"
                                ("\\chapter{%s}" . "\\chapter*{%s}")
+                               ("\\section{%s}" . "\\section*{%s}")
+                               ("\\subsection{%s}" . "\\subsection*{%s}")
+                               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                              ("beamer"
+                               "\\documentclass[presentations]{beamer}
+\\usepackage{luatexja}
+\\usepackage[ipaex]{luatexja-preset}
+\\renewcommand{\\kanjifamilydefault}{\\gtdefault}
+ [NO-DEFAULT-PACKAGES]
+ [PACKAGES]
+ [EXTRA]"
                                ("\\section{%s}" . "\\section*{%s}")
                                ("\\subsection{%s}" . "\\subsection*{%s}")
                                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -979,6 +1023,29 @@ you should place your code here."
   (setq TeX-source-correlate-start-server t)
 
 
+  ;;;; org-ref & helm-bibtex settings
+  ;; org-ref
+  (setq org-ref-default-bibliography '("~/refs/references.bib")
+        org-ref-pdf-directory "~/refs/pdfs/"
+        org-ref-bibliography-notes "~/refs/notes.org")
+  ;; helm-bibtex
+  (setq bibtex-completion-bibliography "~/refs/references.bib"
+        bibtex-completion-library-path "~/refs/pdfs"
+        bibtex-completion-notes-path "~/refs/notes.org")
+  ;; variables that control bibtex key format for auto-generation
+  ;; I want firstauthor-year-title-words
+  ;; this usually makes a legitimate filename to store pdfs under.
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-year-separator ""
+        bibtex-autokey-year-title-separator "_"
+        bibtex-autokey-titleword-separator "_"
+        bibtex-autokey-titlewords 2
+        bibtex-autokey-titlewords-stretch 1
+        bibtex-autokey-titleword-length 5)
+  ;; ;; migemo を有効化
+  ;; (push '(migemo) helm-source-bibtex)
+
+  ;; For setting of platex もう必要ないかも
   (with-eval-after-load 'tex-jp
     (setq TeX-engine-alist '((pdfuptex "pdfupTeX"
                                      "/Library/TeX/texbin/ptex2pdf -u -e -ot '%S %(mode)'"
@@ -988,7 +1055,6 @@ you should place your code here."
     ;(setq japanese-TeX-engine-default 'luatex)
     ;(setq japanese-TeX-engine-default 'xetex)
     ;; pdfview and auctex
-    
     ;; (setq TeX-view-program-selection '((output-dvi "displayline")
     ;;                                    (output-pdf "displayline")))
     ;; (setq TeX-view-program-selection '((output-dvi "Skim")
@@ -998,21 +1064,21 @@ you should place your code here."
     (dolist (command '("pTeX" "pLaTeX" "pBibTeX" "jTeX" "jLaTeX" "jBibTeX" "Mendex"))
     (delq (assoc command TeX-command-list) TeX-command-list)) )
 
-  ;; w3m
-  (defun dotspacemacs/user-config ()
-    (setq w3m-home-page "https://www.google.com")
-    ;; W3M Home Page
-    (setq w3m-default-display-inline-images t)
-    (setq w3m-default-toggle-inline-images t)
-    ;; W3M default display images
-    (setq w3m-command-arguments '("-cookie" "-F"))
-    (setq w3m-use-cookies t)
-    ;; W3M use cookies
-    (setq browse-url-browser-function 'w3m-browse-url)
-    ;; Browse url function use w3m
-    (setq w3m-view-this-url-new-session-in-background t)
-    ;; W3M view url new session in background
-  )
+  ;; ;; w3m
+  ;; (defun dotspacemacs/user-config ()
+  ;;   (setq w3m-home-page "https://www.google.com")
+  ;;   ;; W3M Home Page
+  ;;   (setq w3m-default-display-inline-images t)
+  ;;   (setq w3m-default-toggle-inline-images t)
+  ;;   ;; W3M default display images
+  ;;   (setq w3m-command-arguments '("-cookie" "-F"))
+  ;;   (setq w3m-use-cookies t)
+  ;;   ;; W3M use cookies
+  ;;   (setq browse-url-browser-function 'w3m-browse-url)
+  ;;   ;; Browse url function use w3m
+  ;;   (setq w3m-view-this-url-new-session-in-background t)
+  ;;   ;; W3M view url new session in background
+  ;; )
 
   ;; ;; Weblioで辞書検索
   ;; (autoload 'dic-lookup-w3m "dic-lookup-w3m" "w3mで辞書を引く" t)
