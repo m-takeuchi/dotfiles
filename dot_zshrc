@@ -1,0 +1,66 @@
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# コマンド履歴を１万行保存する
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt hist_ignore_dups  # 同じコマンドを履歴に残さない
+setopt share_history     # 同時に起動したzshで履歴を共有する
+setopt auto_cd             #一致するディレクトリに cdなしで移動できる
+setopt correct             #コマンドのスペルを修正(正しい可能性のある候補を表示)
+setopt correct_all         #コマンドラインの引数のスペルを修正
+setopt inc_append_history  #即座に履歴を保存する
+
+# Ctrl + N/Pでコマンド履歴を検索する
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^N" history-beginning-search-forward-end
+bindkey "^P" history-beginning-search-backward-end
+
+
+## 256色ターミナル
+autoload -Uz colors
+#colors
+#PROMPT=$'%{\e[30;48;5;082m%}%{\e[38;5;001m%}[%n@%m]%{\e[0m%}'
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+  #alias dir='dir --color=auto'
+  #alias vdir='vdir --color=auto'
+
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# deno for NEOVIM
+. "$HOME/.deno/env"
+# cargo
+. "$HOME/.cargo/env"
+
+export EDITOR=nvim
+
+
+source $HOME/.venv/bin/activate
+
+export PATH=$HOME/.local/bin:$PATH
+
+# Starship -- cross-shell prompt
+eval "$(starship init zsh)"
+
+# zoxide; zoxide is a smarter cd command, inspired by z and autojump.
+eval "$(zoxide init zsh)"
