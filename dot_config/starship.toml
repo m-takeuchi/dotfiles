@@ -1,0 +1,49 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+error_symbol   = "[X](bold red)"
+vicmd_symbol   = "[V](bold green)"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[directory]
+truncation_length = 10
+truncate_to_repo = false
+
+[git_status]
+conflicted = "💥"
+ahead = "🏎💨"
+behind = "🥲"
+diverged = "😵"
+untracked = "🌚"
+stashed = "📦"
+modified = "📝"
+staged = '🔦'
+renamed = "🏷"
+deleted = "🗑"
+
+[[battery.display]]
+threshold = 100 #// バッテリー残量が常に表示されるように設定
+style = "bold blue"
+
+[battery]
+full_symbol = "🤗"
+charging_symbol = "😌"
+discharging_symbol = "😨"
+
+[time]
+disabled = false
+#use_12hr = true #// 12時間表示に設定
+
+[memory_usage]
+disabled = false
+threshold = -1 #// 常にメモリ使用率が表示されるように設定
+style = "bold dimmed green"
