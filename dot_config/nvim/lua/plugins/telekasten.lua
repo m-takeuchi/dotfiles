@@ -12,7 +12,7 @@ return {
     -- telekasten settings, zettelkasten
     config = function()
       require("telekasten").setup({
-        home = vim.fn.expand("~/zettelkasten_work"), -- Put the name of your notes directory here
+        home = vim.fn.expand("~/zettelkasten"), -- Put the name of your notes directory here
         template_new_note = vim.fn.expand("~/zettelkasten/templates/template_new_note.md"),
         uuid_type = "%Y%m%d-%H%M",
         vaults = {
@@ -21,12 +21,12 @@ return {
             home = vim.fn.expand("~/zettelkasten"), -- Put the name of your notes directory here
           },
           work = {
-            home = vim.fn.expand("~/zettelkasten_work"),
-            dailies = vim.fn.expand("~/zettelkasten_work/lognote"),
-            weeklies = vim.fn.expand("~/zettelkasten_work/lognote"),
-            template_new_note = vim.fn.expand("~/zettelkasten_work/templates/template_new_note.md"),
-            template_daily_note = vim.fn.expand("~/zettelkasten_work/templates/template_daily_note.md"),
-            template_weekly_note = vim.fn.expand("~/zettelkasten_work/templates/template_weekly_note.md"),
+            home = vim.fn.expand("~/zettelkasten"),
+            dailies = vim.fn.expand("~/zettelkasten/lognote"),
+            weeklies = vim.fn.expand("~/zettelkasten/lognote"),
+            template_new_note = vim.fn.expand("~/zettelkasten/templates/template_new_note.md"),
+            template_daily_note = vim.fn.expand("~/zettelkasten/templates/template_daily_note.md"),
+            template_weekly_note = vim.fn.expand("~/zettelkasten/templates/template_weekly_note.md"),
           },
         },
       })
@@ -43,11 +43,11 @@ return {
       { "<leader>zT", "<cmd>Telekasten goto_today<CR>" },
       { "<leader>zn", "<cmd>Telekasten new_note<CR>" },
       { "<leader>zN", "<cmd>Telekasten new_templated_note<CR>" },
-      { "<leader>zI", "<cmd>Telekasten insert_img_link<CR>" },
+      { "<leader>zi", "<cmd>Telekasten insert_link<CR>" },
       { "<leader>zy", "<cmd>Telekasten yank_notelink<CR>" },
       { "<leader>zc", "<cmd>Telekasten show_calendar<CR>" },
       { "<leader>zC", "<cmd>CalendarT<CR>" },
-      { "<leader>zi", "<cmd>Telekasten paste_ig_and_link<CR>" },
+      --      { "<leader>zi", "<cmd>Telekasten paste_ig_and_link<CR>" },
       { "<leader>zt", "<cmd>Telekasten toggle_todo<CR>" },
       { "<leader>zb", "<cmd>Telekasten show_backlinks<CR>" },
       { "<leader>zF", "<cmd>Telekasten find_frends<CR>" },
