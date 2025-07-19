@@ -11,10 +11,8 @@ return {
       vim.cmd([[ call skkeleton#config({
       \ 'completionRankFile': '~/.skk/rank.json',
       \ 'eggLikeNewline':v:true,
-      \'skkServerHost': $SKKSERVER,
-      \'skkServerPort':1178,
-      \'sources':["skk_server","skk_dictionary"],
-        \ 'globalDictionaries': [
+      \'sources':["skk_dictionary"],
+      \ 'globalDictionaries': [
           \'~/.skk/SKK-JISYO.L',
           \'~/.skk/SKK-JISYO.jinmei',
           \'~/.skk/SKK-JISYO.edict',
