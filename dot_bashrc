@@ -115,7 +115,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. "/home/takeuchi/.deno/env"
+. "$HOME/.deno/env"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 . "$HOME/.cargo/env"
 
@@ -131,3 +131,5 @@ export SKKSERVER=localhost
 eval "$(starship init bash)"
 
 export PATH=$HOME/.local/bin:$PATH
+source $HOME/.local/share/bash-completion/completions/deno.bash
+

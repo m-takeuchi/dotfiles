@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/home/m2takeuchi/.zsh/completions:"* ]]; then export FPATH="/home/m2takeuchi/.zsh/completions:$FPATH"; fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # コマンド履歴を１万行保存する
@@ -64,3 +66,7 @@ eval "$(starship init zsh)"
 
 # zoxide; zoxide is a smarter cd command, inspired by z and autojump.
 eval "$(zoxide init zsh)"
+
+# Initialize zsh completions (added by deno install script)
+autoload -Uz compinit
+compinit
