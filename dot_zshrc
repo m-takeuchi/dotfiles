@@ -70,3 +70,8 @@ eval "$(zoxide init zsh)"
 # Initialize zsh completions (added by deno install script)
 autoload -Uz compinit
 compinit
+
+# Go lang
+export PATH=$PATH:/usr/local/go/bin
+# lazygit
+export PATH=$PATH:$HOME/go/bin
