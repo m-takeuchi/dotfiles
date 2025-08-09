@@ -133,3 +133,7 @@ eval "$(starship init bash)"
 export PATH=$HOME/.local/bin:$PATH
 source $HOME/.local/share/bash-completion/completions/deno.bash
 
+# Go lang
+export PATH=$PATH:/usr/local/go/bin
+# lazygit
+export PATH=$PATH:$HOME/go/bin

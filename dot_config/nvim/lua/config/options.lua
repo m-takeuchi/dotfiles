@@ -3,13 +3,14 @@
 -- Add any additional options here
 --
 -- Encodings and File settings
-vim.opt.encoding = "utf-8"
-vim.opt.fileencoding = "utf-8"
-vim.opt.fileencodings = { "ucs-bom", "iso-2022-jp", "euc-jp", "sjis", "utf-8" }
+vim.opt.encoding = "utf8"
+vim.opt.fileencoding = "utf8"
+vim.opt.fileencodings = { "utf8", "ucs-bom", "iso-2022-jp", "euc-jp", "sjis" }
 vim.opt.fileformats = { "unix", "dos", "mac" }
-----vim.opt.ambiwidth = 'double'
+vim.scriptencoding = "utf8"
+---vim.opt.ambiwidth = 'double'
 --
 -- Clipboard
 vim.o.clipboard = "unnamedplus"
--- Floating windows にはボーダーをつける
+-- Floating windows
 vim.opt.winborder = "rounded"
