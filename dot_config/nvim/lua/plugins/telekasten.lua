@@ -52,7 +52,6 @@ return {
       { "<leader>zy", "<cmd>Telekasten yank_notelink<CR>" },
       { "<leader>zc", "<cmd>Telekasten show_calendar<CR>" },
       { "<leader>zC", "<cmd>CalendarT<CR>" },
-      { "<leader>zi", "<cmd>Telekasten paste_img_and_link<CR>" },
       { "<leader>zt", "<cmd>Telekasten toggle_todo<CR>" },
       { "<leader>zb", "<cmd>Telekasten show_backlinks<CR>" },
       { "<leader>zF", "<cmd>Telekasten find_frends<CR>" },

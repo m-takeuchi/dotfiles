@@ -75,3 +75,4 @@ compinit
 export PATH=$PATH:/usr/local/go/bin
 # lazygit
 export PATH=$PATH:$HOME/go/bin
+export PATH=export PATH=~/.npm-global/bin:$PATH
